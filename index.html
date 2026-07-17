@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hassaan Ali Akbar — Full-Stack Developer</title>
+  <meta name="description" content="Hassaan Ali Akbar — Full Stack Web Developer building scalable web applications and enterprise systems using Laravel, React, Vue, Node.js and PostgreSQL. Open to remote opportunities." />
+  <meta name="keywords" content="Full Stack Developer, Laravel, React, Vue, Node.js, PostgreSQL, REST APIs, Enterprise, Dashboard, RBAC" />
+  <meta property="og:title" content="Hassaan Ali Akbar — Full-Stack Developer" />
+  <meta property="og:description" content="Building scalable web applications, enterprise systems and modern user experiences using Laravel, React, Vue.js, Node.js and PostgreSQL." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="https://hassaan.dev/" />
+  <link rel="icon" href="1000148492.png" />
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── NAVBAR ─────────────────────────────────────────────── -->
+  <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand mono-text" href="#home">
+        <span class="accent-cyan">&gt;_</span> hassaan.dev
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto gap-1">
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+          <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="#experience">Experience</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          <li class="nav-item ms-2">
+            <a class="btn btn-outline-cyan btn-sm" href="#contact">Hire Me</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── HERO ───────────────────────────────────────────────── -->
+  <section id="home" class="hero-section d-flex align-items-center">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-glow"></div>
+
+    <div class="container position-relative">
+      <div class="row align-items-center min-vh-100 py-5">
+        <div class="col-lg-7 hero-content">
+          <div class="hero-eyebrow mono-text mb-3">
+            <span class="accent-cyan">01</span> <span class="text-muted">— Hello, World!</span>
+          </div>
+          <h1 class="hero-title">
+            I'm <span class="gradient-text">Hassaan</span><br />
+            <span class="typewriter-wrapper">
+              <span id="typewriter"></span><span class="cursor-blink">|</span>
+            </span>
+          </h1>
+            <p class="hero-sub mt-4">
+              Full Stack Web Developer focused on building scalable web
+              applications, enterprise systems and modern user experiences using
+              <span class="accent-cyan">Laravel</span>, <span class="accent-purple">React</span>, <span class="accent-cyan">Vue</span>, <span class="accent-purple">Node.js</span> and
+              <span class="accent-cyan">PostgreSQL</span>. Based in <span class="accent-purple">Lahore, Pakistan</span> — available for remote roles.
+            </p>
+
+          <div class="hero-stats d-flex gap-4 mt-4 mb-5 flex-wrap">
+            <div class="stat-item">
+              <div class="stat-num accent-cyan">6+</div>
+              <div class="stat-label">Projects Completed</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <div class="stat-num accent-cyan">10+</div>
+              <div class="stat-label">Technologies Used</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <div class="stat-num accent-cyan">3+</div>
+              <div class="stat-label">Enterprise Applications</div>
+            </div>
+            <div class="stat-divider d-none d-md-block"></div>
+            <div class="stat-item">
+              <div class="stat-num accent-cyan">5+</div>
+              <div class="stat-label">API Integrations</div>
+            </div>
+            <div class="stat-divider d-none d-md-block"></div>
+            <div class="stat-item">
+              <div class="stat-num accent-cyan">Active</div>
+              <div class="stat-label">GitHub Contributions</div>
+            </div>
+            <div class="stat-divider d-none d-md-block"></div>
+            <div class="stat-item">
+              <div class="stat-num accent-cyan">Open for Work</div>
+              <div class="stat-label">Full-Time Opportunities</div>
+            </div>
+          </div>
+
+          <div class="hero-cta d-flex gap-3 flex-wrap align-items-center">
+            <a href="#projects" class="btn btn-cyan" aria-label="View Projects">
+              <i class="bi bi-code-square me-2"></i>View Projects
+            </a>
+            <a href="#contact" class="btn btn-ghost" aria-label="Contact">
+              <i class="bi bi-send me-2"></i>Get In Touch
+            </a>
+            <a href="Hassaan%20Ali%20Akbar%20Resume.pdf" class="btn btn-outline-cyan" download="Hassaan Ali Akbar Resume.pdf" aria-label="Download resume">
+              <i class="bi bi-download me-2"></i>Download Resume
+            </a>
+            <a href="Hassaan%20Ali%20Akbar%20Resume.pdf" class="btn btn-ghost" target="_blank" aria-label="View resume">
+              <i class="bi bi-eye me-2"></i>View Resume
+            </a>
+            <div class="open-to-work-box ms-md-2">
+              <span class="status-pulse-dot"></span>
+              <div class="d-flex flex-column text-start">
+                <span class="open-to-work-title text-cyan fw-bold">Open for Work</span>
+                <span class="open-to-work-subtitle text-white opacity-75">Available &bull; Full-Time Opportunities</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-socials mt-5 d-flex gap-3">
+            <a href="https://github.com/hassaanrana07" target="_blank" class="social-link" aria-label="GitHub">
+              <i class="bi bi-github"></i>
+            </a>
+            <a href="https://linkedin.com/in/hassaanaliakbar" target="_blank" class="social-link" aria-label="LinkedIn">
+              <i class="bi bi-linkedin"></i>
+            </a>
+            <a href="mailto:hassaanalee07@gmail.com" class="social-link" aria-label="Email">
+              <i class="bi bi-envelope"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-5 d-none d-lg-flex justify-content-center">
+          <div class="hero-code-card">
+            <div class="code-card-header">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+              <span class="file-name ms-3 mono-text">developer.js</span>
+            </div>
+            <pre class="code-body"><code><span class="kw">const</span> <span class="var">hassaan</span> = {
+  <span class="prop">role</span>: <span class="str">"Full-Stack Developer"</span>,
+  <span class="prop">location</span>: <span class="str">"Lahore, Pakistan"</span>,
+  <span class="prop">stack</span>: [
+    <span class="str">"Laravel"</span>, <span class="str">"Vue.js"</span>,
+    <span class="str">"React.js"</span>, <span class="str">"Node.js"</span>,
+    <span class="str">"MySQL"</span>, <span class="str">"Redis"</span>
+  ],
+  <span class="prop">currentFocus</span>: <span class="str">"AI-Assisted Dev"</span>,
+  <span class="prop">available</span>: <span class="kw">true</span>,
+
+  <span class="prop">greet</span>: () =&gt; {
+    <span class="kw">return</span> <span class="str">"Let's build something!"</span>;
+  }
+};</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <span class="mono-text text-muted">scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- Project Detail Modal (reusable) -->
+  <div class="modal fade" id="projectDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content bg-dark text-light border-0">
+        <div class="modal-header">
+          <h5 class="modal-title" id="projectDetailTitle">Project Title</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-4">
+            <div class="col-lg-7">
+              <h6>Overview</h6>
+              <p id="projectOverview" class="text-muted-body"></p>
+
+              <h6>Business Problem</h6>
+              <p id="projectProblem" class="text-muted-body"></p>
+
+              <h6>Solution</h6>
+              <p id="projectSolution" class="text-muted-body"></p>
+
+              <h6>Key Features</h6>
+              <ul id="projectFeatures" class="text-muted-body"></ul>
+
+              <h6>Lessons Learned</h6>
+              <p id="projectLessons" class="text-muted-body"></p>
+            </div>
+            <div class="col-lg-5">
+              <h6>Architecture</h6>
+              <div id="projectDiagram" class="project-diagram mb-3"></div>
+
+              <h6>Tech & Metrics</h6>
+              <ul id="projectTechList" class="text-muted-body"></ul>
+
+              <h6>Project Links</h6>
+              <div class="d-flex gap-2 mt-2">
+                <a id="projectRepoLink" href="#" target="_blank" class="btn btn-ghost btn-sm"><i class="bi bi-github me-2"></i>Repository</a>
+                <a id="projectDemoLink" href="#" target="_blank" class="btn btn-outline-cyan btn-sm"><i class="bi bi-box-arrow-up-right me-2"></i>Live Demo</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ABOUT ───────────────────────────────────────────────── -->
+  <section id="about" class="section-pad">
+    <div class="container">
+      <div class="section-header mb-5">
+        <div class="mono-text accent-cyan mb-2">02 &mdash; About</div>
+        <h2 class="section-title">Who I Am</h2>
+      </div>
+
+      <div class="row align-items-center g-5">
+        <div class="col-lg-5">
+          <div class="about-avatar-wrap">
+            <div class="avatar-img-container">
+              <img src="1000148492.png" alt="Hassaan Ali Akbar" class="about-avatar-img" />
+            </div>
+            <div class="avatar-badge">
+              <i class="bi bi-patch-check-fill accent-cyan"></i>
+              <span>Open to Work</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <p class="about-lead">
+            I build scalable web applications and enterprise systems with a strong focus on clean architecture, maintainable backends and performant frontends. I specialise in Laravel for backend, React and Vue for frontend, and PostgreSQL for reliable data storage.
+          </p>
+          <p class="text-muted-body mt-3">
+            My work centres on dashboards, admin panels, authentication systems, and REST APIs for business-critical applications. I design systems to be secure, testable and scalable — implementing role-based access control, background jobs, and API integrations. I also use AI-assisted development tools to speed up iteration while keeping code quality and architecture decisions intentional.
+          </p>
+
+          <p class="text-muted-body mt-3">
+            Outside of development I enjoy photography as a creative hobby. While I value visual craft, my primary focus is delivering robust engineering solutions that drive business outcomes.
+          </p>
+
+          <div class="about-tags mt-4 d-flex flex-wrap gap-2">
+            <span class="tag-pill"><i class="bi bi-geo-alt me-1"></i>Lahore, Pakistan</span>
+            <span class="tag-pill"><i class="bi bi-mortarboard me-1"></i>BS Computer Science</span>
+            <span class="tag-pill"><i class="bi bi-briefcase me-1"></i>Enterprise Apps</span>
+            <span class="tag-pill"><i class="bi bi-gear me-1"></i>REST APIs</span>
+          </div>
+
+          <div class="mt-4 d-flex gap-3">
+            <a href="https://github.com/hassaanrana07" target="_blank" class="btn btn-ghost btn-sm">
+              <i class="bi bi-github me-2"></i>GitHub
+            </a>
+            <a href="https://linkedin.com/in/hassaanaliakbar" target="_blank" class="btn btn-ghost btn-sm">
+              <i class="bi bi-linkedin me-2"></i>LinkedIn
+            </a>
+            <a href="mailto:hassaanalee07@gmail.com" class="btn btn-ghost btn-sm">
+              <i class="bi bi-envelope me-2"></i>Email
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SKILLS ──────────────────────────────────────────────── -->
+  <section id="skills" class="section-pad">
+    <div class="container">
+      <div class="section-header mb-5">
+        <div class="mono-text accent-cyan mb-2">03 &mdash; Skills</div>
+        <h2 class="section-title">Tech Stack</h2>
+        <p class="text-muted-body mt-2">Explore the interactive constellation. Hover over stars to see the skill category. Drag nodes to warp the spring web, and click to trigger kinetic pulses.</p>
+      </div>
+
+      <div class="constellation-container">
+        <!-- Canvas -->
+        <canvas id="skillsConstellation"></canvas>
+        
+        <!-- Legend (bottom-left) -->
+        <div class="constellation-legend">
+          <div class="legend-item">
+            <span class="legend-dot" style="background-color: #a855f7; box-shadow: 0 0 8px #a855f7;"></span>
+            <span>Frontend</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot" style="background-color: #06b6d4; box-shadow: 0 0 8px #06b6d4;"></span>
+            <span>Backend</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot" style="background-color: #f59e0b; box-shadow: 0 0 8px #f59e0b;"></span>
+            <span>Tools &amp; DevOps</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot" style="background-color: #ff6b6b; box-shadow: 0 0 8px #ff6b6b;"></span>
+            <span>Design</span>
+          </div>
+        </div>
+
+        <!-- Tooltip Overlay -->
+        <div id="constellationTooltip" class="constellation-tooltip" style="width: auto; min-width: 140px; padding: 10px 14px;">
+          <div class="d-flex flex-column align-items-center gap-1">
+            <span id="tooltipName" class="fw-bold fs-6 text-center text-nowrap">React</span>
+            <span id="tooltipCategory" class="badge font-mono text-uppercase" style="font-size: 0.6rem; padding: 4px 8px;">Frontend</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Professional categorized tech stack (keeps constellation unchanged) -->
+      <div class="tech-stack-categories mt-5">
+        <div class="row g-3">
+          <div class="col-6 col-md-4 col-lg-2">
+            <div class="tech-card">
+              <div class="tech-title">Languages</div>
+              <div class="tech-items">
+                <span class="tech-badge">JavaScript</span>
+                <span class="tech-badge">TypeScript</span>
+                <span class="tech-badge">PHP</span>
+                <span class="tech-badge">SQL</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <div class="tech-card">
+              <div class="tech-title">Frameworks</div>
+              <div class="tech-items">
+                <span class="tech-badge">Laravel</span>
+                <span class="tech-badge">React</span>
+                <span class="tech-badge">Vue.js</span>
+                <span class="tech-badge">Inertia.js</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <div class="tech-card">
+              <div class="tech-title">Backend</div>
+              <div class="tech-items">
+                <span class="tech-badge">Node.js</span>
+                <span class="tech-badge">PHP (Laravel)</span>
+                <span class="tech-badge">REST APIs</span>
+                <span class="tech-badge">GraphQL</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <div class="tech-card">
+              <div class="tech-title">Frontend</div>
+              <div class="tech-items">
+                <span class="tech-badge">React</span>
+                <span class="tech-badge">Vue.js</span>
+                <span class="tech-badge">Tailwind</span>
+                <span class="tech-badge">Bootstrap</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <div class="tech-card">
+              <div class="tech-title">Databases</div>
+              <div class="tech-items">
+                <span class="tech-badge">PostgreSQL</span>
+                <span class="tech-badge">MySQL</span>
+                <span class="tech-badge">Redis</span>
+                <span class="tech-badge">MongoDB</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <div class="tech-card">
+              <div class="tech-title">Tools & Cloud</div>
+              <div class="tech-items">
+                <span class="tech-badge">Docker</span>
+                <span class="tech-badge">Git</span>
+                <span class="tech-badge">GitHub</span>
+                <span class="tech-badge">Vercel / Forge</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROJECTS ────────────────────────────────────────────── -->
+  <section id="projects" class="section-pad">
+    <div class="container">
+      <div class="section-header mb-5">
+        <div class="mono-text accent-cyan mb-2">04 &mdash; Projects</div>
+        <h2 class="section-title">What I've Built</h2>
+      </div>
+
+      <!-- Filter buttons -->
+      <div class="project-filters d-flex gap-2 flex-wrap mb-4">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="fullstack">Full-Stack</button>
+        <button class="filter-btn" data-filter="frontend">Frontend</button>
+        <button class="filter-btn" data-filter="backend">Backend</button>
+      </div>
+
+      <div class="row g-4" id="projectsGrid">
+
+        <!-- Project 1: BrickBeam -->
+        <div class="col-md-6 col-lg-4 project-item" data-category="fullstack">
+          <div class="holo-card-wrapper">
+            <div class="holo-card-tilt">
+              <div class="holo-card" data-project="brickbeam">
+                <!-- Card Front -->
+                <div class="holo-card-front">
+                  <div class="project-links-corner">
+                    <a href="https://github.com/hassaanrana07/brickbeam" target="_blank" class="icon-link" aria-label="GitHub">
+                      <i class="bi bi-github"></i>
+                    </a>
+                  </div>
+                  <div class="front-content-wrap">
+                    <div class="project-letter">B</div>
+                    <div class="front-text-wrap">
+                      <h5 class="project-title">BrickBeam Enterprise CMS</h5>
+                      <span class="category-pill">Full-Stack</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Card Back -->
+                <div class="holo-card-back">
+                  <h5 class="back-project-title">BrickBeam CMS</h5>
+                  <div class="professional-badges">
+                    <span class="badge-prof">Enterprise Ready</span>
+                    <span class="badge-prof">Role Based Access</span>
+                    <span class="badge-prof">Analytics</span>
+                  </div>
+                  <p class="project-overview-text">Enterprise construction platform streamlining cost estimation, workflow permissions, and lead qualification.</p>
+                  <div class="project-tags">
+                    <span class="tag">Laravel 12</span>
+                    <span class="tag">Vue.js</span>
+                    <span class="tag">Inertia.js</span>
+                    <span class="tag">Redis</span>
+                  </div>
+                  <div class="action-buttons">
+                    <div class="d-flex gap-2 w-100">
+                      <a href="https://github.com/hassaanrana07/brickbeam" target="_blank" class="btn-cta btn-github flex-grow-1" aria-label="BrickBeam Repository"><i class="bi bi-github me-1"></i>Code</a>
+                      <a href="https://brickbeam.hassaan.dev" target="_blank" class="btn-cta btn-demo flex-grow-1" aria-label="BrickBeam Demo"><i class="bi bi-box-arrow-up-right me-1"></i>Demo</a>
+                    </div>
+                    <a href="#" class="btn-cta btn-case w-100" data-project="brickbeam" aria-label="View BrickBeam case study">View Case Study</a>
+                  </div>
+                  <button class="btn-flip-back">Flip back</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2: Air-Sense -->
+        <div class="col-md-6 col-lg-4 project-item" data-category="fullstack">
+          <div class="holo-card-wrapper">
+            <div class="holo-card-tilt">
+              <div class="holo-card" data-project="airsense">
+                <!-- Card Front -->
+                <div class="holo-card-front">
+                  <div class="project-links-corner">
+                    <a href="https://github.com/hassaanrana07/airsense" target="_blank" class="icon-link" aria-label="GitHub">
+                      <i class="bi bi-github"></i>
+                    </a>
+                  </div>
+                  <div class="front-content-wrap">
+                    <div class="project-letter">A</div>
+                    <div class="front-text-wrap">
+                      <h5 class="project-title">Air-Sense AQI Alert</h5>
+                      <span class="category-pill">Full-Stack</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Card Back -->
+                <div class="holo-card-back">
+                  <h5 class="back-project-title">Air-Sense</h5>
+                  <div class="professional-badges">
+                    <span class="badge-prof">Real-Time</span>
+                    <span class="badge-prof">WebSockets</span>
+                    <span class="badge-prof">Dashboard</span>
+                  </div>
+                  <p class="project-overview-text">Live air quality monitoring network with sub-second WebSocket data feeds and threshold-based push alerts.</p>
+                  <div class="project-tags">
+                    <span class="tag">React.js</span>
+                    <span class="tag">Node.js</span>
+                    <span class="tag">WebSockets</span>
+                    <span class="tag">Tailwind</span>
+                  </div>
+                  <div class="action-buttons">
+                    <div class="d-flex gap-2 w-100">
+                      <a href="https://github.com/hassaanrana07/airsense" target="_blank" class="btn-cta btn-github flex-grow-1" aria-label="AirSense Repository"><i class="bi bi-github me-1"></i>Code</a>
+                      <a href="https://airsense.hassaan.dev" target="_blank" class="btn-cta btn-demo flex-grow-1" aria-label="AirSense Demo"><i class="bi bi-box-arrow-up-right me-1"></i>Demo</a>
+                    </div>
+                    <a href="#" class="btn-cta btn-case w-100" data-project="airsense" aria-label="View AirSense case study">View Case Study</a>
+                  </div>
+                  <button class="btn-flip-back">Flip back</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3: Rent Bro -->
+        <div class="col-md-6 col-lg-4 project-item" data-category="fullstack">
+          <div class="holo-card-wrapper">
+            <div class="holo-card-tilt">
+              <div class="holo-card" data-project="rentbro">
+                <!-- Card Front -->
+                <div class="holo-card-front">
+                  <div class="project-links-corner">
+                    <a href="https://github.com/hassaanrana07/rentbro" target="_blank" class="icon-link" aria-label="GitHub">
+                      <i class="bi bi-github"></i>
+                    </a>
+                  </div>
+                  <div class="front-content-wrap">
+                    <div class="project-letter">R</div>
+                    <div class="front-text-wrap">
+                      <h5 class="project-title">Rent Bro (PRMS)</h5>
+                      <span class="category-pill">Full-Stack</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Card Back -->
+                <div class="holo-card-back">
+                  <h5 class="back-project-title">Rent Bro (PRMS)</h5>
+                  <div class="professional-badges">
+                    <span class="badge-prof">Dashboard</span>
+                    <span class="badge-prof">Role Based Access</span>
+                    <span class="badge-prof">Responsive</span>
+                  </div>
+                  <p class="project-overview-text">Centralized rental management system tracking leases, tenant requests, and ledger payments.</p>
+                  <div class="project-tags">
+                    <span class="tag">Laravel 12</span>
+                    <span class="tag">MySQL</span>
+                    <span class="tag">Bootstrap</span>
+                  </div>
+                  <div class="action-buttons">
+                    <div class="d-flex gap-2 w-100">
+                      <a href="https://github.com/hassaanrana07/rentbro" target="_blank" class="btn-cta btn-github flex-grow-1" aria-label="RentBro Repository"><i class="bi bi-github me-1"></i>Code</a>
+                      <a href="https://rentbro.hassaan.dev" target="_blank" class="btn-cta btn-demo flex-grow-1" aria-label="RentBro Demo"><i class="bi bi-box-arrow-up-right me-1"></i>Demo</a>
+                    </div>
+                    <a href="#" class="btn-cta btn-case w-100" data-project="rentbro" aria-label="View RentBro case study">View Case Study</a>
+                  </div>
+                  <button class="btn-flip-back">Flip back</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 4: Product Catalog -->
+        <div class="col-md-6 col-lg-4 project-item" data-category="fullstack">
+          <div class="holo-card-wrapper">
+            <div class="holo-card-tilt">
+              <div class="holo-card" data-project="catalog">
+                <!-- Card Front -->
+                <div class="holo-card-front">
+                  <div class="project-links-corner">
+                    <a href="https://github.com/hassaanrana07/product-catalog" target="_blank" class="icon-link" aria-label="GitHub">
+                      <i class="bi bi-github"></i>
+                    </a>
+                  </div>
+                  <div class="front-content-wrap">
+                    <div class="project-letter">C</div>
+                    <div class="front-text-wrap">
+                      <h5 class="project-title">Product Catalog System</h5>
+                      <span class="category-pill">Full-Stack</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Card Back -->
+                <div class="holo-card-back">
+                  <h5 class="back-project-title">Product Catalog</h5>
+                  <div class="professional-badges">
+                    <span class="badge-prof">REST API</span>
+                    <span class="badge-prof">Authentication</span>
+                    <span class="badge-prof">Role Based Access</span>
+                  </div>
+                  <p class="project-overview-text">Secure inventory and catalog system with advanced searches, filters, and role permissions.</p>
+                  <div class="project-tags">
+                    <span class="tag">React.js</span>
+                    <span class="tag">Node.js</span>
+                    <span class="tag">MongoDB</span>
+                    <span class="tag">JWT</span>
+                  </div>
+                  <div class="action-buttons">
+                    <div class="d-flex gap-2 w-100">
+                      <a href="https://github.com/hassaanrana07/product-catalog" target="_blank" class="btn-cta btn-github flex-grow-1" aria-label="Product Catalog Repository"><i class="bi bi-github me-1"></i>Code</a>
+                      <a href="https://catalog.hassaan.dev" target="_blank" class="btn-cta btn-demo flex-grow-1" aria-label="Product Catalog Demo"><i class="bi bi-box-arrow-up-right me-1"></i>Demo</a>
+                    </div>
+                    <a href="#" class="btn-cta btn-case w-100" data-project="catalog" aria-label="View Product Catalog case study">View Case Study</a>
+                  </div>
+                  <button class="btn-flip-back">Flip back</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 5: Personal Portfolio -->
+        <div class="col-md-6 col-lg-4 project-item" data-category="frontend">
+          <div class="holo-card-wrapper">
+            <div class="holo-card-tilt">
+              <div class="holo-card" data-project="portfolio">
+                <!-- Card Front -->
+                <div class="holo-card-front">
+                  <div class="project-links-corner">
+                    <a href="https://github.com/hassaanrana07/Personal-Portfolio-Website" target="_blank" class="icon-link" aria-label="GitHub">
+                      <i class="bi bi-github"></i>
+                    </a>
+                  </div>
+                  <div class="front-content-wrap">
+                    <div class="project-letter">P</div>
+                    <div class="front-text-wrap">
+                      <h5 class="project-title">Personal Portfolio</h5>
+                      <span class="category-pill">Frontend</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Card Back -->
+                <div class="holo-card-back">
+                  <h5 class="back-project-title">Personal Portfolio</h5>
+                  <div class="professional-badges">
+                    <span class="badge-prof">Responsive</span>
+                    <span class="badge-prof">Performance</span>
+                    <span class="badge-prof">SEO Friendly</span>
+                  </div>
+                  <p class="project-overview-text">Interactive developer portfolio featuring physics constellations and holographic card effects.</p>
+                  <div class="project-tags">
+                    <span class="tag">React.js</span>
+                    <span class="tag">Tailwind</span>
+                    <span class="tag">Vite</span>
+                    <span class="tag">Canvas</span>
+                  </div>
+                  <div class="action-buttons">
+                    <div class="d-flex gap-2 w-100">
+                      <a href="https://github.com/hassaanrana07/Personal-Portfolio-Website" target="_blank" class="btn-cta btn-github flex-grow-1" aria-label="Portfolio Repository"><i class="bi bi-github me-1"></i>Code</a>
+                      <a href="https://hassaan.dev" target="_blank" class="btn-cta btn-demo flex-grow-1" aria-label="Portfolio Demo"><i class="bi bi-box-arrow-up-right me-1"></i>Demo</a>
+                    </div>
+                    <a href="#" class="btn-cta btn-case w-100" data-project="portfolio" aria-label="View Portfolio case study">View Case Study</a>
+                  </div>
+                  <button class="btn-flip-back">Flip back</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 6: Furnivo -->
+        <div class="col-md-6 col-lg-4 project-item" data-category="frontend">
+          <div class="holo-card-wrapper">
+            <div class="holo-card-tilt">
+              <div class="holo-card" data-project="furnivo">
+                <!-- Card Front -->
+                <div class="holo-card-front">
+                  <div class="project-links-corner">
+                    <a href="https://github.com/hassaanrana07/furnivo" target="_blank" class="icon-link" aria-label="GitHub">
+                      <i class="bi bi-github"></i>
+                    </a>
+                  </div>
+                  <div class="front-content-wrap">
+                    <div class="project-letter">F</div>
+                    <div class="front-text-wrap">
+                      <h5 class="project-title">Furnivo E-Commerce</h5>
+                      <span class="category-pill">Frontend</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Card Back -->
+                <div class="holo-card-back">
+                  <h5 class="back-project-title">Furnivo Store</h5>
+                  <div class="professional-badges">
+                    <span class="badge-prof">Responsive</span>
+                    <span class="badge-prof">Performance</span>
+                    <span class="badge-prof">Local Cart</span>
+                  </div>
+                  <p class="project-overview-text">Lightweight e-commerce storefront with client-side filters, local cart persistence, and instant queries.</p>
+                  <div class="project-tags">
+                    <span class="tag">HTML5</span>
+                    <span class="tag">CSS3</span>
+                    <span class="tag">JavaScript</span>
+                    <span class="tag">Bootstrap</span>
+                  </div>
+                  <div class="action-buttons">
+                    <div class="d-flex gap-2 w-100">
+                      <a href="https://github.com/hassaanrana07/furnivo" target="_blank" class="btn-cta btn-github flex-grow-1" aria-label="Furnivo Repository"><i class="bi bi-github me-1"></i>Code</a>
+                      <a href="https://furnivo.hassaan.dev" target="_blank" class="btn-cta btn-demo flex-grow-1" aria-label="Furnivo Demo"><i class="bi bi-box-arrow-up-right me-1"></i>Demo</a>
+                    </div>
+                    <a href="#" class="btn-cta btn-case w-100" data-project="furnivo" aria-label="View Furnivo case study">View Case Study</a>
+                  </div>
+                  <button class="btn-flip-back">Flip back</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── EXPERIENCE / EDUCATION ──────────────────────────────── -->
+  <section id="experience" class="section-pad section-alt">
+    <div class="container">
+      <div class="section-header mb-5">
+        <div class="mono-text accent-cyan mb-2">05 &mdash; Experience</div>
+        <h2 class="section-title">Journey So Far</h2>
+      </div>
+
+      <div class="row g-5">
+
+        <!-- Experience column -->
+        <div class="col-lg-6">
+          <h4 class="col-title mb-4"><i class="bi bi-briefcase accent-cyan me-2"></i>Work</h4>
+          <div class="timeline timeline-cyan">
+
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div class="tl-content">
+                <div class="tl-card-icon"><i class="bi bi-briefcase-fill"></i></div>
+                <div class="tl-date mono-text">2024 — Present</div>
+                <h5 class="tl-role">Full-Stack Web Developer</h5>
+                <div class="tl-company accent-cyan">Ronnie Ridge Technology</div>
+                <p class="tl-desc">Building enterprise web applications using Laravel, Vue.js, and Inertia.js. Working on multi-role RBAC systems, real-time dashboards, and scalable backends.</p>
+                <div class="tl-tags d-flex gap-1 flex-wrap mt-2">
+                  <span class="tag sm">PHP</span>
+                  <span class="tag sm">Laravel</span>
+                  <span class="tag sm">React.js</span>
+                  <span class="tag sm">Vue.js</span>
+                  <span class="tag sm">MySQL</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div class="tl-content">
+                <div class="tl-card-icon"><i class="bi bi-terminal-fill"></i></div>
+                <div class="tl-date mono-text">May — Aug 2024</div>
+                <h5 class="tl-role">Frontend Developer Intern</h5>
+                <div class="tl-company accent-purple">Codiveo</div>
+                <p class="tl-desc">Worked on frontend development using HTML, CSS, JavaScript, and Bootstrap. Built responsive layouts and UI components for client projects.</p>
+                <div class="tl-tags d-flex gap-1 flex-wrap mt-2">
+                  <span class="tag sm">HTML/CSS</span>
+                  <span class="tag sm">JavaScript</span>
+                  <span class="tag sm">Bootstrap</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div class="tl-content">
+                <div class="tl-card-icon"><i class="bi bi-rocket-takeoff-fill"></i></div>
+                <div class="tl-date mono-text">2026</div>
+                <h5 class="tl-role">Task-Based Internship</h5>
+                <div class="tl-company accent-cyan">FentixTech / Fantex</div>
+                <p class="tl-desc">Completing structured web development tasks, deploying static projects to Netlify, and building practical portfolio pieces.</p>
+                <div class="tl-tags d-flex gap-1 flex-wrap mt-2">
+                  <span class="tag sm">HTML</span>
+                  <span class="tag sm">CSS</span>
+                  <span class="tag sm">JS</span>
+                  <span class="tag sm">Bootstrap</span>
+                  <span class="tag sm">Netlify</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Education column -->
+        <div class="col-lg-6">
+          <h4 class="col-title mb-4"><i class="bi bi-mortarboard accent-purple me-2"></i>Education</h4>
+          <div class="timeline timeline-purple">
+
+            <div class="tl-item">
+              <div class="tl-dot purple"></div>
+              <div class="tl-content">
+                <div class="tl-card-icon"><i class="bi bi-mortarboard-fill"></i></div>
+                <div class="tl-date mono-text">2022 — Present</div>
+                <h5 class="tl-role">BS Computer Science</h5>
+                <div class="tl-company accent-purple">Virtual University of Pakistan</div>
+                <p class="tl-desc">Studying Data Structures, OOP, Discrete Mathematics, Data Communications, and more. Student ID: BC220406878.</p>
+                <!-- <div class="tl-tags d-flex gap-1 flex-wrap mt-2">
+                  <span class="tag sm">CS301</span>
+                  <span class="tag sm">CS304</span>
+                  <span class="tag sm">MTH202</span>
+                </div> -->
+              </div>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-dot purple"></div>
+              <div class="tl-content">
+                <div class="tl-card-icon"><i class="bi bi-robot"></i></div>
+                <div class="tl-date mono-text">Self-Learning</div>
+                <h5 class="tl-role">AI-Assisted Development</h5>
+                <div class="tl-company accent-purple">Ongoing</div>
+                <p class="tl-desc">Actively learning AI/ML fundamentals and integrating AI tools (Cursor, GitHub Copilot, Antigravity) into development workflows.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ─────────────────────────────────────────────── -->
+  <section id="contact" class="section-pad">
+    <div class="container">
+      <div class="row g-5 align-items-center justify-content-between">
+
+        <div class="col-lg-5">
+          <h2 class="contact-section-title mb-3">Get in Touch</h2>
+          <p class="contact-section-desc mb-4">Have a question or want to work together? Drop us a message!</p>
+
+          <div class="contact-list-new">
+            <div class="contact-item-new mb-4 d-flex align-items-center gap-3">
+              <div class="contact-icon-new icon-purple">
+                <i class="bi bi-envelope"></i>
+              </div>
+              <div>
+                <div class="contact-lbl">Email</div>
+                <a href="mailto:hassaanalee07@gmail.com" class="contact-val">hassaanalee07@gmail.com</a>
+              </div>
+            </div>
+
+            <div class="contact-item-new d-flex align-items-center gap-3">
+              <div class="contact-icon-new icon-pink">
+                <i class="bi bi-geo-alt"></i>
+              </div>
+              <div>
+                <div class="contact-lbl">Location</div>
+                <span class="contact-val">Lahore, Pakistan</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="contact-form-card-new">
+            <div id="form-success" class="alert-success-custom d-none">
+              <i class="bi bi-check-circle-fill me-2"></i>Message sent! I'll get back to you soon.
+            </div>
+            <div id="contactForm">
+                <div class="mb-3">
+                  <input type="text" id="contactName" class="form-input-new" placeholder="Your Name" aria-label="Your name" required />
+                </div>
+                <div class="mb-3 position-relative">
+                  <input type="email" id="contactEmail" class="form-input-new" placeholder="Email Address" aria-label="Email address" required />
+                  <span class="email-input-icon"><i class="bi bi-envelope text-muted"></i></span>
+                </div>
+                <div class="mb-3">
+                  <input type="text" id="contactSubject" class="form-input-new" placeholder="Subject" aria-label="Subject" required />
+                </div>
+                <div class="mb-4">
+                  <textarea id="contactMessage" class="form-input-new textarea-new" rows="4" placeholder="Your Message" aria-label="Your message" required></textarea>
+                </div>
+              <button class="btn-gradient-send w-100" id="sendBtn" onclick="handleContact()" aria-label="Send message">
+                Send Message <i class="bi bi-send ms-2"></i>
+              </button>
+                <div id="form-error" class="error-msg d-none mt-2" role="alert" aria-live="assertive">Please fill in all fields.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ──────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+        <div class="mono-text">
+          <span class="accent-cyan">&gt;_</span> hassaan.dev &mdash;
+          <span class="text-muted">Built with HTML, Bootstrap &amp; JS</span>
+        </div>
+        <div class="footer-socials d-flex gap-3">
+          <a href="https://github.com/hassaanrana07" target="_blank" class="social-link sm">
+            <i class="bi bi-github"></i>
+          </a>
+          <a href="https://linkedin.com/in/hassaanaliakbar" target="_blank" class="social-link sm">
+            <i class="bi bi-linkedin"></i>
+          </a>
+          <a href="mailto: hassaanalee07@gmail.com" class="social-link sm">
+            <i class="bi bi-envelope"></i>
+          </a>
+        </div>
+        <div class="text-muted small">
+          &copy; <span id="year"></span> Hassaan Ali Akbar
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom JS -->
+  <script src="main.js"></script>
+  <!-- Skills Constellation JS -->
+  <script src="skills-network.js"></script>
+  <!-- Projects 3D Tilt JS -->
+  <script src="projects-tilt.js"></script>
+</body>
+</html>
