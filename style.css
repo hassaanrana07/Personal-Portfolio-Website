@@ -1428,14 +1428,31 @@ body {
   min-height: 120px;
 }
 
-.email-input-icon {
+.icon-padding {
+  padding-left: 2.8rem !important;
+}
+
+.input-icon-new {
   position: absolute;
-  right: 1.25rem;
+  left: 1.1rem;
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-input-new:focus ~ .input-icon-new i {
+  color: #3b82f6 !important;
+  transition: color 0.25s ease;
+}
+
+.textarea-icon {
+  top: 1.1rem;
+  transform: none;
 }
 
 .btn-gradient-send {
@@ -1502,6 +1519,242 @@ body {
 .fade-in-up.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ── SERVICES SECTION ───────────────────────────────────────── */
+.services-slider-container {
+  width: 100%;
+  height: 480px;
+  position: relative;
+  margin-top: 20px;
+  overflow: visible;
+}
+
+.services-slider-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.services-slide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 390px;
+  height: 430px;
+  transform: translate3d(-50%, -50%, 0) scale(0.6);
+  opacity: 0;
+  z-index: 1;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+              opacity 0.6s ease,
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+  pointer-events: none;
+}
+
+/* Active (Center) Card */
+.services-slide.active {
+  transform: translate3d(-50%, -50%, 0) scale(1.05);
+  opacity: 1;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+/* Left (Prev) Card - behind center */
+.services-slide.prev {
+  transform: translate3d(-105%, -50%, 0) scale(0.85);
+  opacity: 0.5;
+  z-index: 5;
+  pointer-events: auto;
+}
+
+/* Right (Next) Card - behind center */
+.services-slide.next {
+  transform: translate3d(5%, -50%, 0) scale(0.85);
+  opacity: 0.5;
+  z-index: 5;
+  pointer-events: auto;
+}
+
+/* Far Left (entering/exiting) */
+.services-slide.far-prev {
+  transform: translate3d(-140%, -50%, 0) scale(0.7);
+  opacity: 0;
+  z-index: 2;
+}
+
+/* Far Right (entering/exiting) */
+.services-slide.far-next {
+  transform: translate3d(40%, -50%, 0) scale(0.7);
+  opacity: 0;
+  z-index: 2;
+}
+
+.services-slide.hidden-slide {
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.service-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2.2rem 1.8rem;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.service-card:hover {
+  transform: scale(1.03); /* Increase box size by ~11px on hover, no bg/text color changes */
+}
+
+.service-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+/* Alternate accent glow for service cards on hover */
+.services-slide:nth-child(odd) .service-card:hover {
+  border-color: var(--cyan);
+  box-shadow: 0 10px 30px rgba(0, 212, 255, 0.12);
+}
+
+.services-slide:nth-child(even) .service-card:hover {
+  border-color: var(--purple);
+  box-shadow: 0 10px 30px rgba(124, 58, 237, 0.12);
+}
+
+.service-card-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 0.5rem;
+}
+
+.service-card-desc {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-body);
+  margin-bottom: 0;
+}
+
+/* Slider Nav Buttons */
+.services-nav-btns {
+  position: absolute;
+  right: -70px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-slider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  transition: all 0.25s;
+  cursor: pointer;
+}
+
+.btn-slider:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: var(--cyan-dim);
+  transform: translateY(-2px);
+}
+
+.btn-slider:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 1280px) {
+  .services-nav-btns {
+    right: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .services-slider-container {
+    height: 420px;
+  }
+  .services-slide {
+    width: 290px;
+    height: 350px;
+  }
+  .services-slide.prev {
+    transform: translate3d(-98%, -50%, 0) scale(0.85);
+    opacity: 0.4;
+  }
+  .services-slide.next {
+    transform: translate3d(-2%, -50%, 0) scale(0.85);
+    opacity: 0.4;
+  }
+  .services-slide.far-prev {
+    transform: translate3d(-130%, -50%, 0) scale(0.7);
+  }
+  .services-slide.far-next {
+    transform: translate3d(30%, -50%, 0) scale(0.7);
+  }
+  .services-nav-btns {
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: none;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .services-slider-container {
+    height: 380px;
+  }
+  .services-slide {
+    width: 230px;
+    height: 320px;
+  }
+  .services-slide.prev {
+    transform: translate3d(-92%, -50%, 0) scale(0.78);
+    opacity: 0.35;
+  }
+  .services-slide.next {
+    transform: translate3d(-8%, -50%, 0) scale(0.78);
+    opacity: 0.35;
+  }
+  .services-slide.far-prev {
+    transform: translate3d(-120%, -50%, 0) scale(0.65);
+  }
+  .services-slide.far-next {
+    transform: translate3d(20%, -50%, 0) scale(0.65);
+  }
 }
 
 /* ── RESPONSIVE ───────────────────────────────────────────── */

@@ -532,4 +532,82 @@ function handleContact() {
     const bs = new bootstrap.Modal(modalEl); bs.show();
   }));
 
+  /* ── SERVICES 3D STACK SLIDER ────────────────────────────── */
+  (function () {
+    const track = document.getElementById('servicesTrack');
+    const prevBtn = document.querySelector('.services-nav-btns .prev-btn');
+    const nextBtn = document.querySelector('.services-nav-btns .next-btn');
+    if (!track || !prevBtn || !nextBtn) return;
+
+    const slides = Array.from(track.children);
+    const totalSlides = slides.length;
+    
+    let activeIndex = 0;
+
+    const updateSlider = () => {
+      slides.forEach((slide, i) => {
+        // Calculate relative position index in loop (-floor(total/2) to floor(total/2))
+        let diff = i - activeIndex;
+        if (diff > totalSlides / 2) diff -= totalSlides;
+        if (diff < -totalSlides / 2) diff += totalSlides;
+
+        // Remove old positioning/state classes
+        slide.classList.remove('active', 'prev', 'next', 'far-prev', 'far-next', 'hidden-slide');
+
+        // Apply classes based on relative loop difference
+        if (diff === 0) {
+          slide.classList.add('active');
+        } else if (diff === -1) {
+          slide.classList.add('prev');
+        } else if (diff === 1) {
+          slide.classList.add('next');
+        } else if (diff === -2) {
+          slide.classList.add('far-prev');
+        } else if (diff === 2) {
+          slide.classList.add('far-next');
+        } else {
+          slide.classList.add('hidden-slide');
+        }
+      });
+    };
+
+    const handleNext = () => {
+      activeIndex = (activeIndex + 1) % totalSlides;
+      updateSlider();
+    };
+
+    const handlePrev = () => {
+      activeIndex = (activeIndex - 1 + totalSlides) % totalSlides;
+      updateSlider();
+    };
+
+    nextBtn.addEventListener('click', handleNext);
+    prevBtn.addEventListener('click', handlePrev);
+
+    // Touch Swipe Gestures
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    track.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    track.addEventListener('touchend', e => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
+
+    const handleSwipe = () => {
+      const swipeThreshold = 50;
+      if (touchStartX - touchEndX > swipeThreshold) {
+        handleNext();
+      } else if (touchEndX - touchStartX > swipeThreshold) {
+        handlePrev();
+      }
+    };
+
+    // Initial position setup
+    updateSlider();
+  })();
+
 })();
