@@ -2,8 +2,6 @@
 
 A premium, monochromatic editorial developer portfolio engineered with **React 18**, **Vite 6**, **Tailwind CSS**, **Framer Motion**, and **Three.js**.
 
-![Portfolio Preview](src/assets/hero-portrait.webp)
-
 ---
 
 ## 🌟 Overview

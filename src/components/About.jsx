@@ -1,6 +1,7 @@
 import React from 'react';
 import { MapPin, GraduationCap, Briefcase, Settings, CheckCircle2, Github, Linkedin, Mail, Instagram } from 'lucide-react';
 import { handleGlassMouseMove, handleGlassMouseLeave } from '../utils/useGlassTilt';
+import aboutPortrait from '../assets/about-portrait.jpg';
 
 export default function About() {
   return (
@@ -29,7 +30,7 @@ export default function About() {
             >
               <div className="w-full aspect-square rounded-[14px] overflow-hidden bg-[#171310] relative shadow-inner">
                 <img
-                  src="1000148492.png"
+                  src={aboutPortrait}
                   alt="Hassaan Ali Rana"
                   className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                 />
