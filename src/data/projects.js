@@ -17,7 +17,10 @@ export const projects = [
     category: "Full-Stack Web Application",
     type: "Full-Stack Web Application",
     role: "Developer",
-    description: "RentBro is a centralized property and rental management platform engineered to streamline real estate inventory listings, tenant lease auditing, digital payment ledgers, and site maintenance tracking. It provides landlords and property managers with real-time financial tracking and tenant portals.",
+    accentColor: "#10b981",
+    isFeatured: true,
+    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80",
+    description: "RentBro is a centralized property and rental management platform engineered to streamline real estate inventory listings, tenant lease auditing, digital payment ledgers, and site maintenance tracking.",
     technologies: ["Laravel 12", "React", "MySQL", "Tailwind CSS"],
     github: "https://github.com/hassaanrana07/Rent-Bro-Property-and-Rental-Management-System",
     live: null,
@@ -82,19 +85,22 @@ export const projects = [
     number: "02",
     slug: "brickbeam",
     name: "BrickBeam",
-    subtitle: "Construction Resource & Operations Management Platform",
+    subtitle: "Construction Resource & Operations Platform",
     category: "Full-Stack Web Application",
     type: "Full-Stack Web Application",
     role: "Developer",
-    description: "BrickBeam is a construction management platform designed to organize projects, tasks, teams, building site budgets, and financial performance in one centralized system. It eliminates paper-based site logs and manual material estimates, providing real-time workflow phase tracking and automated inventory ledgers.",
+    accentColor: "#f59e0b",
+    isFeatured: false,
+    image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80",
+    description: "BrickBeam is a construction management platform designed to organize projects, tasks, teams, building site budgets, and financial performance in one centralized system.",
     technologies: ["Laravel 12", "React", "MySQL", "Tailwind CSS"],
     github: "https://github.com/hassaanrana07/BrickBeam-Construction-Management-System-",
     live: null,
     preview: "construction",
     caseStudy: {
-      overview: "BrickBeam centralizes civil project site management, resource allocation, and contractor phase completions for construction enterprises. It resolves project cost overruns and site material misplacements by providing automated procurement ledgers and milestone sign-offs.",
+      overview: "BrickBeam centralizes civil project site management, resource allocation, and contractor phase completions for construction enterprises.",
       problem: "Paper-based site logs, manual material estimates, and fragmented contractor spreadsheets lead to budget overruns, inventory theft, and delayed milestone sign-offs.",
-      solution: "Engineered a structured relational workflow engine in Laravel 12 and React tracking building phases from Planning to Finishing, backed by automated material cost estimation algorithms and MySQL ACID transaction locks.",
+      solution: "Engineered a structured relational workflow engine in Laravel 12 and React tracking building phases from Planning to Finishing, backed by automated material cost estimation algorithms.",
       features: [
         { title: "Phase-based Construction Pipeline", desc: "Tracking building milestones across 4 distinct phases (Planning, Foundation, Structure, Finishing)." },
         { title: "Material Inventory Counter", desc: "Real-time site stock allocation logs and usage variance counters." },
@@ -122,12 +128,7 @@ export const projects = [
 │   └── Services/
 │       └── BudgetCalculatorService.php
 ├── database/
-│   ├── migrations/
-│   └── seeders/
-└── resources/js/
-    ├── Components/
-    ├── Pages/Projects/
-    └── Layouts/`,
+├── resources/js/`,
       modules: [
         { name: "Project Pipeline Engine", desc: "Manages building milestones across 4 distinct phases with completion calculations." },
         { name: "Material Procurement Ledger", desc: "Tracks bulk material stock dispatches, site arrivals, and usage variances." },
@@ -140,15 +141,14 @@ export const projects = [
       ],
       auth: "Laravel Sanctum RBAC governing 3 user levels: Administrator, Site Engineer, and Contractor.",
       decisions: [
-        { title: "Laravel 12 + React with Inertia.js", rationale: "Eliminates duplicate API serialization code while preserving full single-page application fluidity." },
-        { title: "MySQL InnoDB Transactions", rationale: "Prevents site inventory quantities from desynchronizing during high-frequency concurrent material updates." }
+        { title: "Laravel 12 + React with Inertia.js", rationale: "Eliminates duplicate API serialization code while preserving full single-page application fluidity." }
       ],
       challenges: [
         { challenge: "Concurrent material updates by site engineers caused inventory count mismatches.", solution: "Applied pessimistic DB row locking (lockForUpdate()) during transaction commits." }
       ],
       futureImprovements: [
         "BIM 3D CAD model viewer integration inside the project phase dashboard.",
-        "Offline-first mobile PWA synchronization for remote construction sites with weak cellular coverage."
+        "Offline-first mobile PWA synchronization for remote construction sites."
       ]
     }
   },
@@ -157,11 +157,14 @@ export const projects = [
     number: "03",
     slug: "airsense",
     name: "AirSense",
-    subtitle: "Real-Time Environmental & Atmospheric Monitoring Network",
-    category: "Data / IoT Monitoring Application",
+    subtitle: "Real-Time Environmental & Atmospheric Network",
+    category: "Data / IoT Monitoring Network",
     type: "Data / IoT Monitoring Application",
     role: "Developer",
-    description: "AirSense is an environmental monitoring network built to process live atmospheric sensor telemetry, deliver geographical radar maps, track pollutant metrics (PM2.5/PM10), and issue automated threshold alert dispatches in real-time.",
+    accentColor: "#06b6d4",
+    isFeatured: false,
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
+    description: "AirSense is an environmental monitoring network built to process live atmospheric sensor telemetry, deliver geographical radar maps, track pollutant metrics (PM2.5/PM10), and issue automated threshold alerts.",
     technologies: ["React", "Node.js", "WebSockets", "Chart.js", "Tailwind CSS"],
     github: "https://github.com/hassaanrana07/AirSense-Real-Time-Air-Quality-Monitoring---Alert-System",
     live: null,
@@ -218,9 +221,12 @@ export const projects = [
     slug: "vyra",
     name: "Vyra",
     subtitle: "Real-Time Social Network Platform",
-    category: "Full-Stack Web Application",
+    category: "Real-Time Social Platform",
     type: "Full-Stack Web Application",
     role: "Developer",
+    accentColor: "#a855f7",
+    isFeatured: false,
+    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=1200&q=80",
     description: "Vyra is a full-stack social networking application engineered for low-latency real-time interactions, live direct messaging, story circles, user presence tracking, and instant feed updates using WebSockets.",
     technologies: ["React", "Node.js", "Express", "MongoDB", "Socket.IO"],
     github: "https://github.com/hassaanrana07/vyra-social-network",
@@ -283,9 +289,12 @@ export const projects = [
     slug: "projectflow",
     name: "ProjectFlow",
     subtitle: "Project & Task Management Platform",
-    category: "Full-Stack Web Application",
+    category: "Project Management Platform",
     type: "Full-Stack Web Application",
     role: "Developer",
+    accentColor: "#6366f1",
+    isFeatured: false,
+    image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80",
     description: "ProjectFlow optimizes team task execution by offering a clean, distraction-free productivity dashboard focused on project velocities, milestone progress bars, and status badges in a Linear-inspired workflow.",
     technologies: ["React", "TypeScript", "Node.js", "Express", "Tailwind CSS"],
     github: "https://github.com/hassaanrana07/ProjectFlow-Project-Management-System",
@@ -344,11 +353,14 @@ export const projects = [
     number: "06",
     slug: "contenthub",
     name: "ContentHub",
-    subtitle: "Enterprise Content & Multi-Tenant SaaS Platform",
-    category: "CMS / Multi-Creator Platform",
+    subtitle: "Enterprise Content & Multi-Tenant SaaS Engine",
+    category: "CMS / Multi-Tenant SaaS",
     type: "CMS / Multi-Creator Platform",
     role: "Developer",
-    description: "ContentHub CMS is an enterprise-grade headless content management engine designed for multi-tenant publishing, content performance analytics, and granular role-based access control. It enables editorial teams to author, schedule, and distribute content with sub-50ms query dispatches.",
+    accentColor: "#ff9a3d",
+    isFeatured: false,
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+    description: "ContentHub CMS is an enterprise-grade headless content management engine designed for multi-tenant publishing, content performance analytics, and granular role-based access control.",
     technologies: ["Laravel 12", "React", "PostgreSQL", "Redis", "Inertia.js"],
     github: "https://github.com/hassaanrana07/ContentHub-CMS-Multi-Creator-Platform",
     live: null,

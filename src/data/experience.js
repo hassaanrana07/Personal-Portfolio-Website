@@ -1,6 +1,7 @@
 export const workExperience = [
   {
-    period: "2024 — Present",
+    period: "Dec 2025 - Apr 2026",
+    location: "Lahore, PK",
     role: "Full-Stack Web Developer",
     company: "Ronnie Ridge Technology",
     color: "cyan",

@@ -28,7 +28,7 @@ export default function Projects({ onOpenCaseStudySlug }) {
             transition={{ duration: 0.6 }}
             className="mono-text text-xs uppercase tracking-widest text-[#8a8a8a] font-bold"
           >
-            04 &mdash; Featured Case Studies
+            05 &mdash; Featured Case Studies
           </motion.div>
 
           <motion.h2

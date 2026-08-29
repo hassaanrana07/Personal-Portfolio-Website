@@ -30,7 +30,7 @@ export default function Services() {
     <section id="services" className="py-20 relative bg-[#0f0f0f] border-y border-[#f2f2f0]/15 overflow-hidden text-[#f2f2f0]">
       <div className="max-w-7xl mx-auto px-6 sm:px-10 mb-8 flex items-center justify-between">
         <div className="mono-text text-xs uppercase tracking-widest text-[#8a8a8a] font-bold">
-          05 &mdash; Services & Capabilities
+          03 &mdash; Services & Capabilities
         </div>
 
         {selectedServiceTitle && (

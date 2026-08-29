@@ -15,8 +15,8 @@ export function handleGlassMouseMove(e) {
   const dx = x - w / 2;
   const dy = y - h / 2;
 
-  const rotateX = -(dy / (h / 2)) * 6;
-  const rotateY = (dx / (w / 2)) * 6;
+  const rotateX = (dy / (h / 2)) * 6;
+  const rotateY = -(dx / (w / 2)) * 6;
 
   card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
 }

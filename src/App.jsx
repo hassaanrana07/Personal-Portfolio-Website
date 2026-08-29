@@ -58,9 +58,9 @@ export default function App() {
         <main>
           <Hero />
           <About />
+          <Services />
           <TechStack />
           <Projects onOpenCaseStudySlug={handleOpenCaseStudySlug} />
-          <Services />
           <Experience />
           <Contact />
         </main>

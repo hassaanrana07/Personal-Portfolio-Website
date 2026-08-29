@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const dy = y - (h / 2);
 
       // Max rotation ±15 degrees
-      const rotateX = -(dy / (h / 2)) * 15;
-      const rotateY = (dx / (w / 2)) * 15;
+      const rotateX = (dy / (h / 2)) * 15;
+      const rotateY = -(dx / (w / 2)) * 15;
 
       // Add the moving class to remove transitions for instantaneous response
       cardTilt.classList.add('moving');

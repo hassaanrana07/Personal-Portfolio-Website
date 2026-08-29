@@ -121,19 +121,21 @@
   animation: marquee-right 30s linear infinite;
 }
 
-/* Continuous Marquee Right-to-Left Animation */
+/* Continuous Marquee Right-to-Left Animation (100% Seamless GPU Loop) */
 @keyframes marquee-left {
   0% {
-    transform: translateX(0%);
+    transform: translate3d(0%, 0, 0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
 .animate-marquee-left {
   display: flex;
   width: max-content;
+  will-change: transform;
+  backface-visibility: hidden;
   animation: marquee-left 30s linear infinite;
 }
 

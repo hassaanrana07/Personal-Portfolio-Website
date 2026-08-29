@@ -1,17 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { ZoomIn, ZoomOut, RotateCcw, Info } from 'lucide-react';
-import { handleGlassMouseMove, handleGlassMouseLeave } from '../utils/useGlassTilt';
 
 export default function TechStack() {
   const containerRef = useRef(null);
   const mountRef = useRef(null);
   const [hoveredSkill, setHoveredSkill] = useState(null);
-
-  // Camera zoom control ref functions
-  const zoomInRef = useRef(() => {});
-  const zoomOutRef = useRef(() => {});
-  const resetCameraRef = useRef(() => {});
+  const [selectedSkill, setSelectedSkill] = useState(null);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -22,12 +16,28 @@ export default function TechStack() {
 
     // --- THREE.JS SCENE SETUP ---
     const scene = new THREE.Scene();
+    
+    // Deep Space Dark Canvas Background
+    scene.background = new THREE.Color(0x040306);
+
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
     
-    // Initial camera position
-    let cameraRadius = 34;
     let theta = Math.PI / 4;
     let phi = Math.PI / 3;
+
+    // Calculate required camera distance dynamically so the solar system occupies ~80% of container with safe margins
+    function getRequiredCameraRadius(w, h) {
+      const aspect = w / h;
+      const targetCoverage = 0.80; // 80% viewport coverage (10% safe edge margin)
+      const maxOrbitExtent = 21.2; // Outer orbit radius (19.0) + sprite radius & margin (2.2)
+      
+      const hDist = (maxOrbitExtent * Math.sin(Math.PI / 3) * 2.0) / (0.8284 * targetCoverage);
+      const wDist = (maxOrbitExtent * 2.0) / (0.8284 * aspect * targetCoverage);
+      
+      return Math.max(34, Math.max(hDist, wDist));
+    }
+
+    let cameraRadius = getRequiredCameraRadius(width, height);
 
     function updateCameraPosition() {
       camera.position.x = cameraRadius * Math.sin(phi) * Math.sin(theta);
@@ -37,149 +47,304 @@ export default function TechStack() {
     }
     updateCameraPosition();
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    const renderer = new THREE.WebGLRenderer({ alpha: false, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(width, height);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
     mount.appendChild(renderer.domElement);
 
     // Light sources
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
     scene.add(ambientLight);
 
-    const sunLight = new THREE.PointLight(0xff9a3d, 3.5, 100);
+    const sunLight = new THREE.PointLight(0xff9a3d, 5.0, 140);
     sunLight.position.set(0, 0, 0);
     scene.add(sunLight);
 
-    // --- SUN (CENTER DEVELOPER CORE) ---
+    // --- DEEP SPACE STARFIELD BACKGROUND ---
+    const starCount = 700;
+    const starGeometry = new THREE.BufferGeometry();
+    const starPositions = new Float32Array(starCount * 3);
+
+    for (let i = 0; i < starCount; i++) {
+      const radius = 60 + Math.random() * 90;
+      const u = Math.random();
+      const v = Math.random();
+      const thetaStar = u * 2.0 * Math.PI;
+      const phiStar = Math.acos(2.0 * v - 1.0);
+
+      starPositions[i * 3] = radius * Math.sin(phiStar) * Math.cos(thetaStar);
+      starPositions[i * 3 + 1] = radius * Math.sin(phiStar) * Math.sin(thetaStar);
+      starPositions[i * 3 + 2] = radius * Math.cos(phiStar);
+    }
+
+    starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+    
+    // Custom Canvas Texture for Crisp Soft Round Stars
+    const starCanvas = document.createElement('canvas');
+    starCanvas.width = 32;
+    starCanvas.height = 32;
+    const starCtx = starCanvas.getContext('2d');
+    const grad = starCtx.createRadialGradient(16, 16, 0, 16, 16, 16);
+    grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+    grad.addColorStop(0.3, 'rgba(255, 240, 220, 0.8)');
+    grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    starCtx.fillStyle = grad;
+    starCtx.beginPath();
+    starCtx.arc(16, 16, 16, 0, Math.PI * 2);
+    starCtx.fill();
+
+    const starTexture = new THREE.CanvasTexture(starCanvas);
+    const starMaterial = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 1.8,
+      map: starTexture,
+      transparent: true,
+      opacity: 0.85,
+      depthWrite: false
+    });
+    const starPoints = new THREE.Points(starGeometry, starMaterial);
+    scene.add(starPoints);
+
+    // --- CELESTIAL BODY: SUBTLE MOON IN UPPER-LEFT BACKGROUND ---
+    const moonGroup = new THREE.Group();
+    moonGroup.position.set(-26, 20, -38);
+
+    const moonGeo = new THREE.SphereGeometry(4.0, 32, 32);
+    
+    // Generate procedurally crisp crater texture for moon
+    const moonCanvas = document.createElement('canvas');
+    moonCanvas.width = 256;
+    moonCanvas.height = 256;
+    const mCtx = moonCanvas.getContext('2d');
+    mCtx.fillStyle = '#6b7280';
+    mCtx.fillRect(0, 0, 256, 256);
+    for (let i = 0; i < 40; i++) {
+      const cx = Math.random() * 256;
+      const cy = Math.random() * 256;
+      const cr = 4 + Math.random() * 18;
+      const cg = mCtx.createRadialGradient(cx, cy, cr * 0.2, cx, cy, cr);
+      cg.addColorStop(0, 'rgba(40, 45, 55, 0.7)');
+      cg.addColorStop(0.8, 'rgba(90, 98, 112, 0.4)');
+      cg.addColorStop(1, 'rgba(120, 130, 145, 0.1)');
+      mCtx.fillStyle = cg;
+      mCtx.beginPath();
+      mCtx.arc(cx, cy, cr, 0, Math.PI * 2);
+      mCtx.fill();
+    }
+    const moonTex = new THREE.CanvasTexture(moonCanvas);
+    const moonMat = new THREE.MeshStandardMaterial({
+      map: moonTex,
+      color: 0x8a94a6,
+      roughness: 0.85,
+      metalness: 0.1
+    });
+    const moonMesh = new THREE.Mesh(moonGeo, moonMat);
+    moonGroup.add(moonMesh);
+    scene.add(moonGroup);
+
+    // --- BLACK HOLE SPIRAL VORTEX IN UPPER-RIGHT BACKGROUND ---
+    const bhGroup = new THREE.Group();
+    bhGroup.position.set(30, 18, -45);
+
+    // Black hole dark core
+    const bhCoreGeo = new THREE.SphereGeometry(3.5, 32, 32);
+    const bhCoreMat = new THREE.MeshBasicMaterial({ color: 0x010102 });
+    const bhCoreMesh = new THREE.Mesh(bhCoreGeo, bhCoreMat);
+    bhGroup.add(bhCoreMesh);
+
+    // Procedural Black Hole Spiral Vortex Canvas Texture
+    const bhCanvas = document.createElement('canvas');
+    bhCanvas.width = 512;
+    bhCanvas.height = 512;
+    const bhCtx = bhCanvas.getContext('2d');
+    bhCtx.fillStyle = 'rgba(1, 1, 2, 0)';
+    bhCtx.fillRect(0, 0, 512, 512);
+
+    const bhGrad = bhCtx.createRadialGradient(256, 256, 30, 256, 256, 240);
+    bhGrad.addColorStop(0, 'rgba(10, 8, 20, 0.95)');
+    bhGrad.addColorStop(0.3, 'rgba(168, 85, 247, 0.35)');
+    bhGrad.addColorStop(0.6, 'rgba(59, 130, 246, 0.2)');
+    bhGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+    bhCtx.fillStyle = bhGrad;
+    bhCtx.beginPath();
+    bhCtx.arc(256, 256, 240, 0, Math.PI * 2);
+    bhCtx.fill();
+
+    // Add spiral vortex arms
+    bhCtx.strokeStyle = 'rgba(168, 85, 247, 0.25)';
+    bhCtx.lineWidth = 14;
+    for (let a = 0; a < Math.PI * 6; a += 0.1) {
+      const r = a * 12;
+      const x = 256 + Math.cos(a) * r;
+      const y = 256 + Math.sin(a) * r;
+      if (a === 0) bhCtx.beginPath();
+      bhCtx.lineTo(x, y);
+    }
+    bhCtx.stroke();
+
+    const bhTex = new THREE.CanvasTexture(bhCanvas);
+    const bhVortexGeo = new THREE.RingGeometry(3.6, 20, 64);
+    const bhVortexMat = new THREE.MeshBasicMaterial({
+      map: bhTex,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.65
+    });
+    const bhVortexMesh = new THREE.Mesh(bhVortexGeo, bhVortexMat);
+    bhVortexMesh.rotation.x = Math.PI / 2.3;
+    bhVortexMesh.rotation.y = -0.3;
+    bhGroup.add(bhVortexMesh);
+
+    scene.add(bhGroup);
+
+    // --- CENTRAL FIERY DEVELOPER SUN SYSTEM (CLEAN GLOBE IN DARK SPACE) ---
     const sunGroup = new THREE.Group();
+
+    // Central Developer Sun Core Mesh
     const sunGeo = new THREE.SphereGeometry(2.4, 32, 32);
     const sunMat = new THREE.MeshStandardMaterial({
       color: 0xff9a3d,
       emissive: 0xff5722,
-      emissiveIntensity: 1.2,
+      emissiveIntensity: 1.4,
       roughness: 0.2,
       metalness: 0.8
     });
     const sunMesh = new THREE.Mesh(sunGeo, sunMat);
     sunGroup.add(sunMesh);
 
-    // Sun Glow Halo Mesh
-    const glowGeo = new THREE.SphereGeometry(2.9, 32, 32);
-    const glowMat = new THREE.MeshBasicMaterial({
-      color: 0xffc107,
-      transparent: true,
-      opacity: 0.25,
-      side: THREE.BackSide
-    });
-    const glowMesh = new THREE.Mesh(glowGeo, glowMat);
-    sunGroup.add(glowMesh);
-
     scene.add(sunGroup);
 
-    // Helper: Create Text Billboard Sprite
-    function createTextSprite(text, textColorHex = '#F5F1EC') {
-      const canvas = document.createElement('canvas');
-      canvas.width = 256;
-      canvas.height = 64;
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, 256, 64);
-      ctx.font = 'Bold 22px "JetBrains Mono", monospace';
-      ctx.fillStyle = textColorHex;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(text, 128, 32);
-
-      const texture = new THREE.CanvasTexture(canvas);
-      texture.needsUpdate = true;
-      const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true });
-      const sprite = new THREE.Sprite(spriteMat);
-      sprite.scale.set(4.2, 1.05, 1);
-      return sprite;
-    }
-
-    // Sun Title Billboard Sprite
-    const sunSprite = createTextSprite("Core Developer", "#FFC107");
-    sunSprite.position.set(0, 3.4, 0);
-    sunGroup.add(sunSprite);
+    // --- SKILL METADATA & DESCRIPTIONS ---
+    const skillDetails = {
+      "HTML5": { category: "Frontend", colorHex: "#FFE9A8", desc: "Modern Semantic Markup & Web Accessibility Standards" },
+      "CSS3": { category: "Frontend", colorHex: "#FFE9A8", desc: "Responsive Layouts, Custom Properties, Flexbox & Grid Systems" },
+      "JavaScript": { category: "Frontend", colorHex: "#FFE9A8", desc: "ES6+ Modern Asynchronous JS Engine & Web APIs" },
+      "React.js": { category: "Frontend", colorHex: "#FFE9A8", desc: "Hooks, Context API, Virtual DOM & Modular UI Components" },
+      "Vue.js": { category: "Frontend", colorHex: "#FFE9A8", desc: "Vue 3 Composition API, Pinia State & Reactive Templates" },
+      "Tailwind CSS": { category: "Frontend", colorHex: "#FFE9A8", desc: "Utility-First CSS Framework & Rapid Design System Architecture" },
+      "Bootstrap": { category: "Frontend", colorHex: "#FFE9A8", desc: "Responsive Grid System & UI Component Frameworks" },
+      "WordPress": { category: "Frontend", colorHex: "#FFE9A8", desc: "Custom Headless CMS, Theme Development & REST APIs" },
+      "Node.js": { category: "Backend", colorHex: "#FF9A3D", desc: "Asynchronous Event-Driven Backend Server Runtime" },
+      "Express.js": { category: "Backend", colorHex: "#FF9A3D", desc: "Fast RESTful API Services & Middleware Architecture" },
+      "Laravel": { category: "Backend", colorHex: "#FF9A3D", desc: "Eloquent ORM, Blade Templates, Inertia.js & Modular Backends" },
+      "PHP": { category: "Backend", colorHex: "#FF9A3D", desc: "Modern Object-Oriented Backend Engineering & Server Logic" },
+      "JWT / RBAC": { category: "Backend", colorHex: "#FF9A3D", desc: "Secure JSON Web Tokens & Multi-Role Access Control Systems" },
+      "PostgreSQL": { category: "Databases", colorHex: "#FF5722", desc: "Advanced Relational Database Queries, Indexing & JSON Types" },
+      "MySQL": { category: "Databases", colorHex: "#FF5722", desc: "Relational Schema Architecture, Index Optimization & Transactions" },
+      "MongoDB": { category: "Databases", colorHex: "#FF5722", desc: "NoSQL Document Storage, Aggregations & Flexible Data Models" },
+      "Redis": { category: "Databases", colorHex: "#FF5722", desc: "In-Memory Key-Value Cache, Session Storage & Pub/Sub Messaging" },
+      "Git": { category: "Tools / Cloud", colorHex: "#a855f7", desc: "Distributed Version Control, Branching & Merge Workflows" },
+      "GitHub": { category: "Tools / Cloud", colorHex: "#a855f7", desc: "CI/CD Workflows, Pull Requests & Collaborative Code Review" },
+      "Docker": { category: "Tools / Cloud", colorHex: "#a855f7", desc: "Containerization, Multi-Stage Dockerfiles & Compose Networks" },
+      "AWS": { category: "Tools / Cloud", colorHex: "#a855f7", desc: "Cloud Deployment, S3 Bucket Assets, EC2 Instances & Infrastructure" }
+    };
 
     // --- OFFICIAL TECHNOLOGY SVG LOGO URLS ---
     const logoPaths = {
       "React.js": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg",
-      "Vue.js 3": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg",
+      "Vue.js": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg",
       "JavaScript": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg",
+      "HTML5": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg",
       "CSS3": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg",
       "Tailwind CSS": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg",
-      "Laravel 12": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg",
+      "Bootstrap": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bootstrap/bootstrap-original.svg",
+      "WordPress": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/wordpress/wordpress-plain.svg",
+      "Laravel": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg",
       "PHP": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg",
       "Node.js": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg",
       "Express.js": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg",
+      "JWT / RBAC": "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/jsonwebtokens.svg",
       "PostgreSQL": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg",
       "MySQL": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg",
       "Redis": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg",
       "MongoDB": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg",
       "Docker": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg",
-      "Git / GitHub": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg",
-      "Vite": "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/vite.svg",
-      "Vercel": "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/vercel.svg"
+      "Git": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg",
+      "GitHub": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg",
+      "AWS": "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/amazon.svg"
     };
 
-    // Helper: Create Combined Logo + Name Texture (CRISP CONTRAST - LOW GLASS FROST)
+    // Helper: Create Combined Logo Node Texture (VIBRANT BRAND COLORS - NO WHITE OVERLAY)
     function createLogoNodeSprite(skillName, logoImg, colorHex) {
       const canvas = document.createElement('canvas');
       canvas.width = 256;
-      canvas.height = 180;
+      canvas.height = 256;
       const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, 256, 180);
+      ctx.scale(2, 2);
+      ctx.clearRect(0, 0, 128, 128);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
 
-      // Draw High-Contrast Background Circle under Logo
-      ctx.fillStyle = 'rgba(23, 19, 16, 0.75)';
+      // Outer Dark Background Disc (Clean Dark Glass - NO white backdrop)
+      ctx.fillStyle = 'rgba(10, 8, 14, 0.94)';
       ctx.beginPath();
-      ctx.arc(128, 58, 48, 0, Math.PI * 2);
+      ctx.arc(64, 64, 52, 0, Math.PI * 2);
       ctx.fill();
+
+      // Category Glowing Border Ring
       ctx.strokeStyle = colorHex || '#FF9A3D';
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 3.0;
       ctx.stroke();
 
-      // Draw Crisp Official SVG Logo at Center (80x80)
+      // Draw Crisp Official SVG Logo at 100% Saturation Authentic Brand Colors
       if (logoImg) {
         ctx.globalAlpha = 1.0;
-        ctx.drawImage(logoImg, 88, 18, 80, 80);
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+        ctx.shadowBlur = 6;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 2;
+        ctx.drawImage(logoImg, 18, 18, 92, 92);
+        ctx.shadowBlur = 0;
+      } else {
+        // Fallback text drawing if image fails to load
+        ctx.fillStyle = colorHex || '#FF9A3D';
+        ctx.font = 'bold 22px monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(skillName.slice(0, 4), 64, 64);
       }
 
-      // Draw Technology Name Text Directly Below Logo
-      ctx.font = 'Bold 20px "JetBrains Mono", monospace';
-      ctx.fillStyle = colorHex || '#F5F1EC';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.shadowColor = '#0D0B0A';
-      ctx.shadowBlur = 6;
-      ctx.fillText(skillName, 128, 116);
-
       const texture = new THREE.CanvasTexture(canvas);
+      texture.minFilter = THREE.LinearFilter;
+      texture.magFilter = THREE.LinearFilter;
       texture.needsUpdate = true;
       const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true });
       const sprite = new THREE.Sprite(spriteMat);
-      sprite.scale.set(5.2, 3.65, 1);
+      sprite.scale.set(4.0, 4.0, 1);
       return sprite;
     }
 
-    // --- ORBIT RINGS & PLANET SYSTEMS ---
+    // --- ORBIT RINGS & STAGGERED ANGLES (PREVENTS NODE COLLISIONS) ---
     const orbitCategories = [
       {
-        name: 'Frontend',
+        name: 'Frontend Core',
         colorHex: '#FFE9A8',
         colorNum: 0xffe9a8,
-        radius: 7.2,
+        radius: 5.4,
         speed: 0.008,
-        skills: ['React.js', 'Vue.js 3', 'JavaScript', 'CSS3', 'Tailwind CSS']
+        angleOffset: 0,
+        skills: ['HTML5', 'CSS3', 'JavaScript', 'React.js']
       },
       {
-        name: 'Backend',
+        name: 'Frontend & Frameworks',
+        colorHex: '#FFE9A8',
+        colorNum: 0xffe9a8,
+        radius: 8.8,
+        speed: 0.006,
+        angleOffset: Math.PI / 4,
+        skills: ['Vue.js', 'Tailwind CSS', 'Bootstrap', 'WordPress']
+      },
+      {
+        name: 'Backend Systems',
         colorHex: '#FF9A3D',
         colorNum: 0xff9a3d,
-        radius: 11.4,
-        speed: 0.005,
-        skills: ['Laravel 12', 'PHP', 'Node.js', 'Express.js']
+        radius: 12.2,
+        speed: 0.004,
+        angleOffset: Math.PI / 5,
+        skills: ['Node.js', 'Express.js', 'Laravel', 'PHP', 'JWT / RBAC']
       },
       {
         name: 'Databases',
@@ -187,15 +352,17 @@ export default function TechStack() {
         colorNum: 0xff5722,
         radius: 15.6,
         speed: 0.003,
-        skills: ['PostgreSQL', 'MySQL', 'Redis', 'MongoDB']
+        angleOffset: Math.PI / 3,
+        skills: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis']
       },
       {
         name: 'Tools & Cloud',
-        colorHex: '#C43A1F',
-        colorNum: 0xc43a1f,
-        radius: 19.8,
+        colorHex: '#a855f7',
+        colorNum: 0xa855f7,
+        radius: 19.0,
         speed: 0.0015,
-        skills: ['Docker', 'Git / GitHub', 'Vite', 'Vercel']
+        angleOffset: Math.PI / 6,
+        skills: ['Git', 'GitHub', 'Docker', 'AWS']
       }
     ];
 
@@ -218,29 +385,33 @@ export default function TechStack() {
       const ringMat = new THREE.LineBasicMaterial({
         color: cat.colorNum,
         transparent: true,
-        opacity: 0.35
+        opacity: 0.42
       });
       const ringLine = new THREE.Line(ringGeo, ringMat);
       orbitGroup.add(ringLine);
 
-      // Create Technology Logo Nodes
+      // Create Technology Logo Nodes with Staggered Angular Spacing
       const count = cat.skills.length;
       cat.skills.forEach((skillName, idx) => {
-        const angle = (idx / count) * Math.PI * 2;
+        const angle = cat.angleOffset + (idx / count) * Math.PI * 2;
         const px = Math.cos(angle) * cat.radius;
         const pz = Math.sin(angle) * cat.radius;
+
+        const info = skillDetails[skillName] || { category: cat.name, colorHex: cat.colorHex, desc: skillName };
 
         // Container Node Group on Orbit Path
         const nodeGroup = new THREE.Group();
         nodeGroup.position.set(px, 0, pz);
         nodeGroup.userData = {
           skillName,
-          category: cat.name,
-          colorHex: cat.colorHex
+          category: info.category,
+          colorHex: info.colorHex,
+          desc: info.desc,
+          ringLine
         };
 
         // Invisible Raycast Target Sphere
-        const hitGeo = new THREE.SphereGeometry(1.2, 8, 8);
+        const hitGeo = new THREE.SphereGeometry(1.6, 8, 8);
         const hitMat = new THREE.MeshBasicMaterial({ visible: false });
         const hitMesh = new THREE.Mesh(hitGeo, hitMat);
         hitMesh.userData = nodeGroup.userData;
@@ -252,15 +423,16 @@ export default function TechStack() {
           const img = new Image();
           img.crossOrigin = 'Anonymous';
           img.onload = () => {
-            const logoNodeSprite = createLogoNodeSprite(skillName, img, cat.colorHex);
+            const logoNodeSprite = createLogoNodeSprite(skillName, img, info.colorHex);
+            logoNodeSprite.position.set(0, 0, 0);
+            nodeGroup.add(logoNodeSprite);
+          };
+          img.onerror = () => {
+            const logoNodeSprite = createLogoNodeSprite(skillName, null, info.colorHex);
             logoNodeSprite.position.set(0, 0, 0);
             nodeGroup.add(logoNodeSprite);
           };
           img.src = logoUrl;
-        } else {
-          const textSprite = createTextSprite(skillName, cat.colorHex);
-          textSprite.position.set(0, 0, 0);
-          nodeGroup.add(textSprite);
         }
 
         orbitGroup.add(nodeGroup);
@@ -271,90 +443,100 @@ export default function TechStack() {
       orbitGroups.push({ group: orbitGroup, speed: cat.speed });
     });
 
-    // --- CONTROLS: ORBIT CAMERA & ZOOM ---
+    // --- CONTROLS: INTENTIONAL DRAG-TO-ROTATE (DESKTOP MOUSE & MOBILE TOUCH) ---
     let isDragging = false;
-    let previousMousePosition = { x: 0, y: 0 };
+    let previousPos = { x: 0, y: 0 };
 
-    function onMouseDown(e) {
-      if (e.button === 0) {
+    function getPointerCoords(e) {
+      if (e.touches && e.touches.length > 0) {
+        return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+      return { x: e.clientX, y: e.clientY };
+    }
+
+    function onPointerDown(e) {
+      if (e.type === 'touchstart' || e.button === 0) {
         isDragging = true;
-        previousMousePosition = { x: e.clientX, y: e.clientY };
+        previousPos = getPointerCoords(e);
       }
     }
 
-    function onMouseMove(e) {
+    function onPointerMove(e) {
       if (isDragging) {
-        const deltaX = e.clientX - previousMousePosition.x;
-        const deltaY = e.clientY - previousMousePosition.y;
+        const currentPos = getPointerCoords(e);
+        const deltaX = currentPos.x - previousPos.x;
+        const deltaY = currentPos.y - previousPos.y;
 
-        theta -= deltaX * 0.008;
-        phi -= deltaY * 0.008;
+        theta += deltaX * 0.007;
+        phi += deltaY * 0.007;
 
-        phi = Math.max(0.1, Math.min(Math.PI - 0.1, phi));
+        phi = Math.max(0.08, Math.min(Math.PI - 0.08, phi));
         updateCameraPosition();
-        previousMousePosition = { x: e.clientX, y: e.clientY };
+        previousPos = currentPos;
       }
     }
 
-    function onMouseUp() {
+    function onPointerUp() {
       isDragging = false;
     }
 
-    function onWheel(e) {
-      e.preventDefault();
-      cameraRadius += e.deltaY * 0.03;
-      cameraRadius = Math.max(12, Math.min(55, cameraRadius));
-      updateCameraPosition();
-    }
-
-    zoomInRef.current = () => {
-      cameraRadius = Math.max(12, cameraRadius - 5);
-      updateCameraPosition();
-    };
-
-    zoomOutRef.current = () => {
-      cameraRadius = Math.min(55, cameraRadius + 5);
-      updateCameraPosition();
-    };
-
-    resetCameraRef.current = () => {
-      cameraRadius = 34;
-      theta = Math.PI / 4;
-      phi = Math.PI / 3;
-      updateCameraPosition();
-    };
-
-    // --- RAYCASTER FOR LOGO NODE HOVER TOOLTIPS ---
+    // --- RAYCASTER FOR HOVER TOOLTIP BADGES & 2D SCREEN PROJECTION ---
     const raycaster = new THREE.Raycaster();
     const mousePos = new THREE.Vector2();
     let currentHoveredGroup = null;
 
     function checkRaycast(e) {
       const rect = renderer.domElement.getBoundingClientRect();
-      mousePos.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      mousePos.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches && e.touches.length > 0 ? e.touches[0].clientY : e.clientY;
+
+      mousePos.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+      mousePos.y = -((clientY - rect.top) / rect.height) * 2 + 1;
 
       raycaster.setFromCamera(mousePos, camera);
       const intersects = raycaster.intersectObjects(interactiveSprites);
 
       if (intersects.length > 0) {
         const hitGroup = intersects[0].object.parent;
+        
+        // Calculate 2D Screen Coordinates inside Container
+        const worldPos = new THREE.Vector3();
+        hitGroup.getWorldPosition(worldPos);
+        worldPos.project(camera);
+
+        const screenX = ((worldPos.x + 1) * rect.width) / 2;
+        const screenY = ((-worldPos.y + 1) * rect.height) / 2;
+
+        // Clamp screen positions to keep tooltip 100% inside container box
+        const clampX = Math.max(85, Math.min(rect.width - 85, screenX));
+        const isNearTop = screenY < 90;
+        const clampY = isNearTop ? screenY + 54 : screenY - 54;
+
         if (currentHoveredGroup !== hitGroup) {
-          if (currentHoveredGroup) {
-            currentHoveredGroup.scale.set(1, 1, 1);
+          if (currentHoveredGroup && currentHoveredGroup.userData.ringLine) {
+            currentHoveredGroup.userData.ringLine.material.opacity = 0.42;
           }
           currentHoveredGroup = hitGroup;
-          hitGroup.scale.set(1.35, 1.35, 1.35);
-          setHoveredSkill({
-            name: hitGroup.userData.skillName,
-            category: hitGroup.userData.category,
-            colorHex: hitGroup.userData.colorHex
-          });
+          if (hitGroup.userData.ringLine) {
+            hitGroup.userData.ringLine.material.opacity = 0.9;
+          }
           mount.style.cursor = 'pointer';
         }
+
+        setHoveredSkill({
+          name: hitGroup.userData.skillName,
+          category: hitGroup.userData.category,
+          colorHex: hitGroup.userData.colorHex,
+          desc: hitGroup.userData.desc,
+          screenX: clampX,
+          screenY: clampY,
+          isBelow: isNearTop
+        });
       } else {
         if (currentHoveredGroup) {
-          currentHoveredGroup.scale.set(1, 1, 1);
+          if (currentHoveredGroup.userData.ringLine) {
+            currentHoveredGroup.userData.ringLine.material.opacity = 0.42;
+          }
           currentHoveredGroup = null;
           setHoveredSkill(null);
           mount.style.cursor = 'grab';
@@ -362,25 +544,38 @@ export default function TechStack() {
       }
     }
 
-    mount.addEventListener('mousedown', onMouseDown);
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', onMouseUp);
-    mount.addEventListener('wheel', onWheel, { passive: false });
-    mount.addEventListener('mousemove', checkRaycast);
+    function handleNodeClick() {
+      if (currentHoveredGroup) {
+        setSelectedSkill({
+          name: currentHoveredGroup.userData.skillName,
+          category: currentHoveredGroup.userData.category,
+          colorHex: currentHoveredGroup.userData.colorHex,
+          desc: currentHoveredGroup.userData.desc
+        });
+      }
+    }
 
-    // --- ANIMATION TICK LOOP ---
+    mount.addEventListener('mousedown', onPointerDown);
+    window.addEventListener('mousemove', onPointerMove);
+    window.addEventListener('mouseup', onPointerUp);
+    mount.addEventListener('touchstart', onPointerDown, { passive: true });
+    window.addEventListener('touchmove', onPointerMove, { passive: true });
+    window.addEventListener('touchend', onPointerUp);
+    mount.addEventListener('mousemove', checkRaycast);
+    mount.addEventListener('click', handleNodeClick);
+
+    // --- ANIMATION TICK LOOP WITH HIGH-PRECISION TIMING ---
     let animFrameId;
-    let clock = new THREE.Clock();
+    const startTime = performance.now();
 
     function animate() {
       animFrameId = requestAnimationFrame(animate);
 
-      const elapsedTime = clock.getElapsedTime();
+      const elapsedTime = (performance.now() - startTime) / 1000;
 
-      // Sun pulse animation
-      const sunPulse = 1 + Math.sin(elapsedTime * 2) * 0.04;
-      sunMesh.scale.set(sunPulse, sunPulse, sunPulse);
-      glowMesh.scale.set(sunPulse, sunPulse, sunPulse);
+      // Rotate Moon & Black Hole Vortex slightly
+      bhVortexMesh.rotation.z = -elapsedTime * 0.05;
+      moonGroup.rotation.y = elapsedTime * 0.02;
 
       // Rotate Orbit Rings
       orbitGroups.forEach((item) => {
@@ -396,18 +591,23 @@ export default function TechStack() {
       width = mount.clientWidth;
       height = mount.clientHeight;
       camera.aspect = width / height;
+      cameraRadius = getRequiredCameraRadius(width, height);
       camera.updateProjectionMatrix();
+      updateCameraPosition();
       renderer.setSize(width, height);
     }
     window.addEventListener('resize', handleResize);
 
     return () => {
       cancelAnimationFrame(animFrameId);
-      mount.removeEventListener('mousedown', onMouseDown);
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseup', onMouseUp);
-      mount.removeEventListener('wheel', onWheel);
+      mount.removeEventListener('mousedown', onPointerDown);
+      window.removeEventListener('mousemove', onPointerMove);
+      window.removeEventListener('mouseup', onPointerUp);
+      mount.removeEventListener('touchstart', onPointerDown);
+      window.removeEventListener('touchmove', onPointerMove);
+      window.removeEventListener('touchend', onPointerUp);
       mount.removeEventListener('mousemove', checkRaycast);
+      mount.removeEventListener('click', handleNodeClick);
       window.removeEventListener('resize', handleResize);
 
       if (mount && renderer.domElement) {
@@ -418,20 +618,20 @@ export default function TechStack() {
   }, []);
 
   return (
-    <section id="skills" className="py-24 relative">
+    <section id="skills" className="py-28 pt-32 relative scroll-mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <div className="mono-text text-xs uppercase tracking-widest text-[#FF9A3D] mb-2 font-bold">
-              03 &mdash; Skills
+              04 &mdash; Skills
             </div>
             <h2 className="font-sora text-3xl sm:text-4xl font-extrabold text-[#F5F1EC] tracking-tight">
               3D Skill Solar System
             </h2>
             <p className="text-[#9A9088] text-sm mt-2 max-w-xl leading-relaxed">
-              Orbital planetary system featuring high-definition SVG technology logos. Drag to orbit the camera, scroll to zoom, and hover any skill node.
+              Explore my technical stack through an interactive 3D skill system. Drag to rotate and hover any skill node.
             </p>
           </div>
 
@@ -450,8 +650,8 @@ export default function TechStack() {
               <span className="text-[#F5F1EC]">Databases</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#C43A1F] shadow-[0_0_8px_#C43A1F]"></span>
-              <span className="text-[#F5F1EC]">Tools/Cloud</span>
+              <span className="w-2.5 h-2.5 rounded-full bg-[#a855f7] shadow-[0_0_8px_#a855f7]"></span>
+              <span className="text-[#F5F1EC]">Tools / Cloud</span>
             </div>
           </div>
         </div>
@@ -459,50 +659,36 @@ export default function TechStack() {
         {/* Three.js Solar System Container */}
         <div
           ref={containerRef}
-          className="glass relative w-full h-[580px] sm:h-[650px] rounded-3xl overflow-hidden cursor-grab active:cursor-grabbing border border-white/10"
-          onMouseMove={handleGlassMouseMove}
-          onMouseLeave={handleGlassMouseLeave}
+          className="glass relative w-full h-[620px] sm:h-[700px] lg:h-[750px] rounded-3xl overflow-hidden cursor-grab active:cursor-grabbing border border-white/10 bg-[#040306]"
         >
           {/* Mount Three.js WebGL Canvas */}
           <div ref={mountRef} className="w-full h-full block" />
 
-          {/* Hover Floating Glass Tooltip */}
+          {/* Sleek Floating Glass Tooltip Card on Node Hover */}
           {hoveredSkill && (
-            <div className="absolute top-6 left-6 glass px-4 py-2.5 pointer-events-none flex items-center gap-2 border border-white/20 animate-fade-in z-20 bg-[#0D0B0A]/90 backdrop-blur-md">
-              <Info className="w-4 h-4 text-[#FF9A3D]" />
-              <div className="text-xs">
-                <span className="font-sora font-bold text-[#F5F1EC] block">{hoveredSkill.name}</span>
-                <span className="font-mono text-[10px] uppercase font-bold" style={{ color: hoveredSkill.colorHex }}>
-                  {hoveredSkill.category} Orbit
-                </span>
+            <div
+              className="absolute z-30 pointer-events-none -translate-x-1/2 transition-all duration-150 ease-out"
+              style={{ left: `${hoveredSkill.screenX}px`, top: `${hoveredSkill.screenY}px` }}
+            >
+              <div
+                className="glass px-4 py-2.5 rounded-xl border border-white/20 shadow-[0_4px_24px_rgba(0,0,0,0.88)] bg-[#0D0B0A]/95 backdrop-blur-md flex flex-col gap-1 text-xs font-sora text-[#F5F1EC] min-w-[200px] max-w-[260px] animate-fade-in"
+                style={{ borderColor: `${hoveredSkill.colorHex}66` }}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-extrabold text-sm text-[#F5F1EC]">{hoveredSkill.name}</span>
+                  <span
+                    className="font-mono text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-white/10"
+                    style={{ color: hoveredSkill.colorHex }}
+                  >
+                    {hoveredSkill.category}
+                  </span>
+                </div>
+                <p className="text-[11px] text-[#9A9088] leading-tight font-sans">
+                  {hoveredSkill.desc}
+                </p>
               </div>
             </div>
           )}
-
-          {/* Zoom Controls Overlay */}
-          <div className="absolute bottom-6 right-6 flex items-center gap-2 z-20">
-            <button
-              onClick={() => zoomInRef.current()}
-              className="glass-btn w-10 h-10 flex items-center justify-center text-[#F5F1EC]"
-              title="Zoom In"
-            >
-              <ZoomIn className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => zoomOutRef.current()}
-              className="glass-btn w-10 h-10 flex items-center justify-center text-[#F5F1EC]"
-              title="Zoom Out"
-            >
-              <ZoomOut className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => resetCameraRef.current()}
-              className="glass-btn w-10 h-10 flex items-center justify-center text-[#F5F1EC]"
-              title="Reset View"
-            >
-              <RotateCcw className="w-4 h-4" />
-            </button>
-          </div>
         </div>
 
       </div>
