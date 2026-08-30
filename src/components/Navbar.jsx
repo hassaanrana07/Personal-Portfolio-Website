@@ -3,6 +3,7 @@ import { Menu, X, Github } from 'lucide-react';
 import { scrollToSection } from '../utils/scrollToSection';
 
 export default function Navbar() {
+  const [isInHero, setIsInHero] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -17,10 +18,14 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
+      const heroEl = document.getElementById('home') || document.getElementById('hero');
+      const heroHeight = heroEl ? heroEl.offsetHeight : window.innerHeight;
+      setIsInHero(window.scrollY < heroHeight - 50);
       setIsScrolled(window.scrollY > 40);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -33,7 +38,11 @@ export default function Navbar() {
   return (
     <nav
       id="mainNav"
-      className={`fixed top-4 left-1/2 -translate-x-1/2 w-[92%] max-w-7xl z-[100] backdrop-blur-xl transition-all duration-300 rounded-2xl border ${
+      className={`absolute top-4 left-1/2 -translate-x-1/2 w-[92%] max-w-7xl z-[100] backdrop-blur-xl transition-all duration-500 ease-in-out rounded-2xl border ${
+        isInHero
+          ? 'opacity-100 translate-y-0 pointer-events-auto'
+          : 'opacity-0 -translate-y-6 pointer-events-none'
+      } ${
         isScrolled
           ? 'py-3 border-white/25 shadow-[0_10px_35px_rgba(0,0,0,0.95)] bg-[#0f0f0f]/95'
           : 'py-4 border-white/15 shadow-xl bg-[#0f0f0f]/90'
