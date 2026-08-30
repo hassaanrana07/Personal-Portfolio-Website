@@ -12,7 +12,7 @@ export default function Contact() {
     if (errorMsg) setErrorMsg('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, email, subject, message } = formData;
 
@@ -27,12 +27,38 @@ export default function Contact() {
     }
 
     setIsSubmitting(true);
-    setTimeout(() => {
+    setErrorMsg('');
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: '7fa7d49a-06af-46d8-a6d9-f0e6f0672537',
+          name: name.trim(),
+          email: email.trim(),
+          subject: subject.trim(),
+          message: message.trim(),
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setSuccessMsg(true);
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        setTimeout(() => setSuccessMsg(false), 6000);
+      } else {
+        setErrorMsg(result.message || 'Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      setErrorMsg('Something went wrong. Please check your network connection.');
+    } finally {
       setIsSubmitting(false);
-      setSuccessMsg(true);
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      setTimeout(() => setSuccessMsg(false), 5000);
-    }, 1200);
+    }
   };
 
   return (

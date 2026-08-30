@@ -33,8 +33,10 @@ export default function Navbar() {
   return (
     <nav
       id="mainNav"
-      className={`fixed top-4 left-1/2 -translate-x-1/2 w-[92%] max-w-7xl z-50 transition-colors duration-300 rounded-2xl border border-white/10 ${
-        isScrolled ? 'py-3 border-white/20 shadow-2xl bg-[#0f0f0f]/95' : 'py-4 bg-[#0f0f0f]/85'
+      className={`fixed top-4 left-1/2 -translate-x-1/2 w-[92%] max-w-7xl z-[100] backdrop-blur-xl transition-all duration-300 rounded-2xl border ${
+        isScrolled
+          ? 'py-3 border-white/25 shadow-[0_10px_35px_rgba(0,0,0,0.95)] bg-[#0f0f0f]/95'
+          : 'py-4 border-white/15 shadow-xl bg-[#0f0f0f]/90'
       }`}
     >
       <div className="px-6 flex items-center justify-between">

@@ -62,13 +62,22 @@ export default function TechStack() {
     sunLight.position.set(0, 0, 0);
     scene.add(sunLight);
 
-    // --- DEEP SPACE STARFIELD BACKGROUND ---
-    const starCount = 700;
+    // --- DEEP SPACE STARFIELD BACKGROUND (2800+ MULTI-COLORED STARS) ---
+    const starCount = 2800;
     const starGeometry = new THREE.BufferGeometry();
     const starPositions = new Float32Array(starCount * 3);
+    const starColors = new Float32Array(starCount * 3);
+
+    const colorPalette = [
+      new THREE.Color(0xffffff), // Pure white
+      new THREE.Color(0xa5f3fc), // Cyan tint
+      new THREE.Color(0xfef08a), // Gold tint
+      new THREE.Color(0xddd6fe), // Violet tint
+      new THREE.Color(0xffedd5), // Warm Amber
+    ];
 
     for (let i = 0; i < starCount; i++) {
-      const radius = 60 + Math.random() * 90;
+      const radius = 55 + Math.random() * 110;
       const u = Math.random();
       const v = Math.random();
       const thetaStar = u * 2.0 * Math.PI;
@@ -77,9 +86,15 @@ export default function TechStack() {
       starPositions[i * 3] = radius * Math.sin(phiStar) * Math.cos(thetaStar);
       starPositions[i * 3 + 1] = radius * Math.sin(phiStar) * Math.sin(thetaStar);
       starPositions[i * 3 + 2] = radius * Math.cos(phiStar);
+
+      const pickedColor = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+      starColors[i * 3] = pickedColor.r;
+      starColors[i * 3 + 1] = pickedColor.g;
+      starColors[i * 3 + 2] = pickedColor.b;
     }
 
     starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+    starGeometry.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
     
     // Custom Canvas Texture for Crisp Soft Round Stars
     const starCanvas = document.createElement('canvas');
@@ -88,7 +103,7 @@ export default function TechStack() {
     const starCtx = starCanvas.getContext('2d');
     const grad = starCtx.createRadialGradient(16, 16, 0, 16, 16, 16);
     grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
-    grad.addColorStop(0.3, 'rgba(255, 240, 220, 0.8)');
+    grad.addColorStop(0.3, 'rgba(240, 245, 255, 0.85)');
     grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
     starCtx.fillStyle = grad;
     starCtx.beginPath();
@@ -97,15 +112,147 @@ export default function TechStack() {
 
     const starTexture = new THREE.CanvasTexture(starCanvas);
     const starMaterial = new THREE.PointsMaterial({
-      color: 0xffffff,
-      size: 1.8,
+      size: 2.2,
       map: starTexture,
+      vertexColors: true,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.9,
       depthWrite: false
     });
     const starPoints = new THREE.Points(starGeometry, starMaterial);
     scene.add(starPoints);
+
+    // --- SECONDARY FAINT TWINKLING DUST STARFIELD LAYER (1500 STARS) ---
+    const dustCount = 1500;
+    const dustGeometry = new THREE.BufferGeometry();
+    const dustPositions = new Float32Array(dustCount * 3);
+    for (let i = 0; i < dustCount; i++) {
+      const radius = 70 + Math.random() * 120;
+      const u = Math.random();
+      const v = Math.random();
+      const thetaD = u * 2.0 * Math.PI;
+      const phiD = Math.acos(2.0 * v - 1.0);
+      dustPositions[i * 3] = radius * Math.sin(phiD) * Math.cos(thetaD);
+      dustPositions[i * 3 + 1] = radius * Math.sin(phiD) * Math.sin(thetaD);
+      dustPositions[i * 3 + 2] = radius * Math.cos(phiD);
+    }
+    dustGeometry.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
+    const dustMaterial = new THREE.PointsMaterial({
+      color: 0x818cf8,
+      size: 1.2,
+      transparent: true,
+      opacity: 0.55,
+      depthWrite: false
+    });
+    const dustPoints = new THREE.Points(dustGeometry, dustMaterial);
+    scene.add(dustPoints);
+
+    // --- PROCEDURAL 3D SPIRAL GALAXY (UPPER-LEFT BACKGROUND) ---
+    const spiralGalaxyGroup = new THREE.Group();
+    spiralGalaxyGroup.position.set(-38, 24, -50);
+
+    const galaxyParticles = 3200;
+    const galaxyGeo = new THREE.BufferGeometry();
+    const galaxyPos = new Float32Array(galaxyParticles * 3);
+    const galaxyCols = new Float32Array(galaxyParticles * 3);
+
+    const galaxyColorCore = new THREE.Color(0xa855f7); // Glowing Purple
+    const galaxyColorArm = new THREE.Color(0x38bdf8);  // Cyan Blue
+    const galaxyColorOuter = new THREE.Color(0xf472b6); // Magenta Pink
+
+    const arms = 3;
+    for (let i = 0; i < galaxyParticles; i++) {
+      const r = Math.pow(Math.random(), 2) * 18;
+      const armIndex = i % arms;
+      const armAngle = (armIndex * 2 * Math.PI) / arms;
+      const spinAngle = r * 0.4;
+      const totalAngle = armAngle + spinAngle;
+
+      const randomX = (Math.random() - 0.5) * (18 - r) * 0.3;
+      const randomY = (Math.random() - 0.5) * (18 - r) * 0.3;
+      const randomZ = (Math.random() - 0.5) * (18 - r) * 0.3;
+
+      galaxyPos[i * 3] = Math.cos(totalAngle) * r + randomX;
+      galaxyPos[i * 3 + 1] = randomY;
+      galaxyPos[i * 3 + 2] = Math.sin(totalAngle) * r + randomZ;
+
+      const mixedColor = galaxyColorCore.clone();
+      if (r < 6) {
+        mixedColor.lerp(galaxyColorArm, r / 6);
+      } else {
+        mixedColor.lerp(galaxyColorOuter, (r - 6) / 12);
+      }
+      galaxyCols[i * 3] = mixedColor.r;
+      galaxyCols[i * 3 + 1] = mixedColor.g;
+      galaxyCols[i * 3 + 2] = mixedColor.b;
+    }
+
+    galaxyGeo.setAttribute('position', new THREE.BufferAttribute(galaxyPos, 3));
+    galaxyGeo.setAttribute('color', new THREE.BufferAttribute(galaxyCols, 3));
+
+    const galaxyMat = new THREE.PointsMaterial({
+      size: 1.6,
+      map: starTexture,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.85,
+      depthWrite: false
+    });
+    const spiralGalaxyMesh = new THREE.Points(galaxyGeo, galaxyMat);
+    spiralGalaxyMesh.rotation.x = Math.PI / 3;
+    spiralGalaxyMesh.rotation.z = Math.PI / 6;
+    spiralGalaxyGroup.add(spiralGalaxyMesh);
+    scene.add(spiralGalaxyGroup);
+
+    // --- PROCEDURAL ANDROMEDA / COSMIC NEBULA GALAXY (LOWER-RIGHT BACKGROUND) ---
+    const cosmicGalaxyGroup = new THREE.Group();
+    cosmicGalaxyGroup.position.set(38, -22, -55);
+
+    const cosmicParticles = 2400;
+    const cosmicGeo = new THREE.BufferGeometry();
+    const cosmicPos = new Float32Array(cosmicParticles * 3);
+    const cosmicCols = new Float32Array(cosmicParticles * 3);
+
+    const cosmicCore = new THREE.Color(0xfbbf24); // Amber Gold
+    const cosmicMid = new THREE.Color(0xec4899);  // Vibrant Pink
+    const cosmicEdge = new THREE.Color(0x6366f1); // Indigo
+
+    for (let i = 0; i < cosmicParticles; i++) {
+      const r = Math.sqrt(Math.random()) * 22;
+      const thetaC = Math.random() * Math.PI * 2;
+
+      const spreadY = (Math.random() - 0.5) * 3.5;
+
+      cosmicPos[i * 3] = Math.cos(thetaC) * r * 1.4;
+      cosmicPos[i * 3 + 1] = spreadY;
+      cosmicPos[i * 3 + 2] = Math.sin(thetaC) * r * 0.8;
+
+      const cColor = cosmicCore.clone();
+      if (r < 8) {
+        cColor.lerp(cosmicMid, r / 8);
+      } else {
+        cColor.lerp(cosmicEdge, (r - 8) / 14);
+      }
+      cosmicCols[i * 3] = cColor.r;
+      cosmicCols[i * 3 + 1] = cColor.g;
+      cosmicCols[i * 3 + 2] = cColor.b;
+    }
+
+    cosmicGeo.setAttribute('position', new THREE.BufferAttribute(cosmicPos, 3));
+    cosmicGeo.setAttribute('color', new THREE.BufferAttribute(cosmicCols, 3));
+
+    const cosmicMat = new THREE.PointsMaterial({
+      size: 1.5,
+      map: starTexture,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.75,
+      depthWrite: false
+    });
+    const cosmicGalaxyMesh = new THREE.Points(cosmicGeo, cosmicMat);
+    cosmicGalaxyMesh.rotation.x = -Math.PI / 4;
+    cosmicGalaxyGroup.add(cosmicGalaxyMesh);
+    scene.add(cosmicGalaxyGroup);
 
     // --- CELESTIAL BODY: SUBTLE MOON IN UPPER-LEFT BACKGROUND ---
     const moonGroup = new THREE.Group();
@@ -573,9 +720,11 @@ export default function TechStack() {
 
       const elapsedTime = (performance.now() - startTime) / 1000;
 
-      // Rotate Moon & Black Hole Vortex slightly
+      // Rotate Moon, Black Hole Vortex & Background Galaxies
       bhVortexMesh.rotation.z = -elapsedTime * 0.05;
       moonGroup.rotation.y = elapsedTime * 0.02;
+      spiralGalaxyGroup.rotation.z = elapsedTime * 0.035;
+      cosmicGalaxyGroup.rotation.y = elapsedTime * 0.025;
 
       // Rotate Orbit Rings
       orbitGroups.forEach((item) => {
