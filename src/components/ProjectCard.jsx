@@ -38,10 +38,39 @@ export default function ProjectCard({ project, index, totalCards, progress, rang
 
   const accentColor = project.accentColor || '#FF9A3D';
 
+  // Framer Motion Synchronized Staggered Variants for Smooth Scroll Reveal
+  const cardVariants = {
+    hidden: { opacity: 0, y: 32, scale: 0.98 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: [0.25, 1, 0.5, 1],
+        staggerChildren: 0.07,
+        delayChildren: 0.05,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 14 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.38, ease: [0.25, 1, 0.5, 1] },
+    },
+  };
+
   return (
     <div className="sticky top-20 md:top-24 flex items-center justify-center mb-16 px-2">
       <motion.div
         style={{ scale }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-40px' }}
+        variants={cardVariants}
         className="w-full max-w-6xl bg-[#0d0b0a]/95 backdrop-blur-xl border border-white/15 hover:border-white/30 rounded-[32px] sm:rounded-[40px] p-6 sm:p-8 lg:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.85)] overflow-hidden relative group transition-all duration-300 hover:-translate-y-1"
       >
         {/* Top Accent Gradient Bar */}
@@ -54,10 +83,10 @@ export default function ProjectCard({ project, index, totalCards, progress, rang
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
           
           {/* LEFT COLUMN (5 COLS / 45%) — PROJECT METADATA & INFORMATION */}
-          <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
+          <motion.div variants={itemVariants} className="lg:col-span-5 flex flex-col justify-between space-y-6">
             
             {/* Top Row: Featured Badge + Large Project Number */}
-            <div className="flex items-center justify-between gap-4">
+            <motion.div variants={itemVariants} className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <span
                   className="font-sora font-black text-[clamp(2.5rem,6vw,76px)] leading-none select-none tracking-tight"
@@ -81,82 +110,93 @@ export default function ProjectCard({ project, index, totalCards, progress, rang
               >
                 {project.category}
               </span>
-            </div>
+            </motion.div>
 
             {/* Project Name & Subtitle */}
-            <div>
+            <motion.div variants={itemVariants}>
               <h3 className="font-sora text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#F5F1EC] tracking-tight uppercase group-hover:text-white transition-colors">
                 {project.name}
               </h3>
               <p className="font-mono text-xs text-[#9A9088] mt-1.5 font-medium">
                 {project.subtitle}
               </p>
-            </div>
+            </motion.div>
 
             {/* Concise Description (Max 3 lines, high contrast) */}
-            <p className="text-xs sm:text-sm text-[#B5AEA8] leading-relaxed font-sans line-clamp-3">
+            <motion.p variants={itemVariants} className="text-xs sm:text-sm text-[#B5AEA8] leading-relaxed font-sans line-clamp-3">
               {project.description}
-            </p>
+            </motion.p>
 
             {/* Technology Stack Pills */}
-            <div className="space-y-2">
+            <motion.div variants={itemVariants} className="space-y-2">
               <span className="font-mono text-[10px] uppercase tracking-widest text-[#8a8a8a] font-bold block">
                 TECHNOLOGY STACK
               </span>
               <div className="flex flex-wrap items-center gap-2">
                 {(project.technologies || []).map((tech, idx) => (
-                  <span
+                  <motion.span
                     key={idx}
+                    whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.1)' }}
+                    transition={{ duration: 0.15 }}
                     className="px-3 py-1 text-[11px] font-mono font-medium rounded-lg bg-white/5 border border-white/10 text-[#F5F1EC] group-hover:border-white/20 transition-colors"
                   >
                     {tech}
-                  </span>
+                  </motion.span>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* Action Buttons: Primary Link & Case Study */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-3 pt-2">
               {primaryUrl && (
-                <a
+                <motion.a
                   href={primaryUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-mono text-xs font-bold uppercase tracking-wider text-[#0D0B0A] transition-all transform active:scale-95 shadow-md hover:shadow-lg"
+                  whileHover={{ scale: 1.04, y: -1 }}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{ duration: 0.15 }}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-mono text-xs font-bold uppercase tracking-wider text-[#0D0B0A] shadow-md hover:shadow-lg cursor-pointer"
                   style={{ backgroundColor: accentColor }}
                 >
                   <PrimaryIcon className="w-4 h-4" />
                   <span>{primaryLabel}</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
+                </motion.a>
               )}
 
               {project.github && project.live && (
-                <a
+                <motion.a
                   href={project.github}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold uppercase tracking-wider border border-white/20 text-[#F5F1EC] hover:bg-white/10 transition-colors"
+                  whileHover={{ scale: 1.04, y: -1, borderColor: 'rgba(255,255,255,0.4)' }}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{ duration: 0.15 }}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold uppercase tracking-wider border border-white/20 text-[#F5F1EC] hover:bg-white/10 transition-colors cursor-pointer"
                 >
                   <Github className="w-4 h-4" />
                   <span>GitHub</span>
-                </a>
+                </motion.a>
               )}
 
-              <button
+              <motion.button
                 onClick={() => onOpenCaseStudySlug && onOpenCaseStudySlug(project.slug)}
+                whileHover={{ scale: 1.04, y: -1, borderColor: 'rgba(255,154,61,0.5)' }}
+                whileTap={{ scale: 0.96 }}
+                transition={{ duration: 0.15 }}
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold uppercase tracking-wider border border-white/20 text-[#F5F1EC] hover:bg-white/10 transition-colors cursor-pointer"
               >
                 <BookOpen className="w-4 h-4 text-[#FF9A3D]" />
                 <span>Case Study</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
 
-          </div>
+          </motion.div>
 
           {/* RIGHT COLUMN (7 COLS / 55%) — macOS DARK BROWSER MOCKUP WITH REFERENCE IMAGE */}
-          <div className="lg:col-span-7">
+          <motion.div variants={itemVariants} className="lg:col-span-7">
             <div
               className="w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-white/20 bg-[#08080a] relative group/preview shadow-2xl transition-all duration-500 hover:scale-[1.02] flex flex-col"
             >
@@ -233,7 +273,7 @@ export default function ProjectCard({ project, index, totalCards, progress, rang
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
         </div>
 

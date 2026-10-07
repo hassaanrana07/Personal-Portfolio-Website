@@ -1,15 +1,22 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { workExperience, educationExperience } from '../data/experience';
 import { Briefcase, GraduationCap, Calendar, MapPin } from 'lucide-react';
 import { handleGlassMouseMove, handleGlassMouseLeave } from '../utils/useGlassTilt';
 
 export default function Experience() {
   return (
-    <section id="experience" className="py-24 relative">
+    <section id="experience" className="py-24 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="mb-14">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
+          className="mb-14"
+        >
           <div className="mono-text text-xs uppercase tracking-widest text-[#FF9A3D] mb-2 font-bold">
             06 &mdash; Experience
           </div>
@@ -19,12 +26,17 @@ export default function Experience() {
           <p className="text-[#9A9088] text-sm mt-1 max-w-xl">
             Detailed timeline of my professional software engineering roles and computer science education background.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           
           {/* WORK HISTORY COLUMN */}
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
+          >
             <div className="flex items-center gap-3 mb-8 pb-3 border-b border-white/10">
               <div className="w-10 h-10 rounded-xl bg-white/05 border border-[#FF9A3D]/30 flex items-center justify-center">
                 <Briefcase className="w-5 h-5 text-[#FF9A3D]" />
@@ -39,7 +51,14 @@ export default function Experience() {
 
             <div className="relative pl-6 space-y-8 border-l-2 border-[#FF9A3D]/40">
               {workExperience.map((item, index) => (
-                <div key={index} className="relative group">
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -15 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: '-30px' }}
+                  transition={{ duration: 0.4, delay: index * 0.1, ease: [0.25, 1, 0.5, 1] }}
+                  className="relative group"
+                >
                   {/* Glowing Accent Dot */}
                   <div className="absolute -left-[31px] top-2 w-3.5 h-3.5 rounded-full bg-[#0D0B0A] border-2 border-[#FF9A3D] shadow-[0_0_12px_#FF9A3D] group-hover:scale-125 group-hover:bg-[#FF9A3D] transition-all"></div>
 
@@ -82,13 +101,18 @@ export default function Experience() {
                       ))}
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* EDUCATION COLUMN */}
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6, delay: 0.15, ease: [0.25, 1, 0.5, 1] }}
+          >
             <div className="flex items-center gap-3 mb-8 pb-3 border-b border-white/10">
               <div className="w-10 h-10 rounded-xl bg-white/05 border border-[#FF5722]/30 flex items-center justify-center">
                 <GraduationCap className="w-5 h-5 text-[#FF5722]" />
@@ -103,7 +127,14 @@ export default function Experience() {
 
             <div className="relative pl-6 space-y-8 border-l-2 border-[#FF5722]/40">
               {educationExperience.map((item, index) => (
-                <div key={index} className="relative group">
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -15 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: '-30px' }}
+                  transition={{ duration: 0.4, delay: index * 0.1, ease: [0.25, 1, 0.5, 1] }}
+                  className="relative group"
+                >
                   {/* Glowing Accent Dot */}
                   <div className="absolute -left-[31px] top-2 w-3.5 h-3.5 rounded-full bg-[#0D0B0A] border-2 border-[#FF5722] shadow-[0_0_12px_#FF5722] group-hover:scale-125 group-hover:bg-[#FF5722] transition-all"></div>
 
@@ -142,10 +173,10 @@ export default function Experience() {
                       ))}
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
         </div>
 

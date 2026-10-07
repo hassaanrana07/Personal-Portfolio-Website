@@ -8,7 +8,7 @@ A premium, monochromatic editorial developer portfolio engineered with **React 1
 
 This repository contains the source code for my personal software engineering portfolio. The website highlights full-stack web applications, real-time WebSocket systems, IoT telemetry monitoring, and enterprise multi-tenant management platforms built with **Laravel 12**, **React**, **PostgreSQL**, **MySQL**, **MongoDB**, **Redis**, and **Node.js**.
 
-- **Live URL**: [https://hassaan.dev/](https://hassaan.dev/) *(or your deployed domain)*
+- **Live Preview**: [https://hassaanalirana.netlify.app/](https://hassaanalirana.netlify.app/)
 - **GitHub Repository**: [https://github.com/hassaanrana07/Personal-Portfolio-Website](https://github.com/hassaanrana07/Personal-Portfolio-Website)
 
 ---
@@ -82,7 +82,7 @@ The optimized production bundle will be generated in the `/dist` directory.
 
 Designed and developed by **Hassaan Ali Rana**.
 
-- **Portfolio**: [hassaan.dev](https://hassaan.dev)
+- **Portfolio**: [https://hassaanalirana.netlify.app/](https://hassaanalirana.netlify.app/)
 - **GitHub**: [@hassaanrana07](https://github.com/hassaanrana07)
 - **LinkedIn**: [hassaanaliakbar](https://linkedin.com/in/hassaanaliakbar)
 - **Email**: [hassaanalee07@gmail.com](mailto:hassaanalee07@gmail.com)

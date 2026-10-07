@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, Instagram } from 'lucide-react';
 import { handleGlassMouseMove, handleGlassMouseLeave } from '../utils/useGlassTilt';
 
@@ -21,43 +22,55 @@ export default function Footer() {
 
         {/* Social Links */}
         <div className="flex items-center gap-3">
-          <a
+          <motion.a
             href="https://github.com/hassaanrana07"
             target="_blank"
             rel="noreferrer"
             aria-label="GitHub"
-            className="w-8 h-8 rounded-lg bg-white/05 border border-white/10 flex items-center justify-center text-[#9A9088] hover:text-[#FF9A3D] hover:border-[#FF9A3D] transition-all"
+            whileHover={{ scale: 1.15, y: -2 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ duration: 0.15 }}
+            className="w-8 h-8 rounded-lg bg-white/05 border border-white/10 flex items-center justify-center text-[#9A9088] hover:text-[#FF9A3D] hover:border-[#FF9A3D] transition-colors"
           >
             <Github className="w-3.5 h-3.5" />
-          </a>
+          </motion.a>
 
-          <a
+          <motion.a
             href="https://linkedin.com/in/hassaanaliakbar"
             target="_blank"
             rel="noreferrer"
             aria-label="LinkedIn"
-            className="w-8 h-8 rounded-lg bg-white/05 border border-white/10 flex items-center justify-center text-[#9A9088] hover:text-[#FF9A3D] hover:border-[#FF9A3D] transition-all"
+            whileHover={{ scale: 1.15, y: -2 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ duration: 0.15 }}
+            className="w-8 h-8 rounded-lg bg-white/05 border border-white/10 flex items-center justify-center text-[#9A9088] hover:text-[#FF9A3D] hover:border-[#FF9A3D] transition-colors"
           >
             <Linkedin className="w-3.5 h-3.5" />
-          </a>
+          </motion.a>
 
-          <a
+          <motion.a
             href="mailto:hassaanalee07@gmail.com"
             aria-label="Email"
-            className="w-8 h-8 rounded-lg bg-white/05 border border-white/10 flex items-center justify-center text-[#9A9088] hover:text-[#FF9A3D] hover:border-[#FF9A3D] transition-all"
+            whileHover={{ scale: 1.15, y: -2 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ duration: 0.15 }}
+            className="w-8 h-8 rounded-lg bg-white/05 border border-white/10 flex items-center justify-center text-[#9A9088] hover:text-[#FF9A3D] hover:border-[#FF9A3D] transition-colors"
           >
             <Mail className="w-3.5 h-3.5" />
-          </a>
+          </motion.a>
 
-          <a
+          <motion.a
             href="https://www.instagram.com/hassaanaleerana/"
             target="_blank"
             rel="noreferrer"
             aria-label="Instagram"
-            className="w-8 h-8 rounded-lg bg-white/05 border border-white/10 flex items-center justify-center text-[#9A9088] hover:text-[#FF9A3D] hover:border-[#FF9A3D] transition-all"
+            whileHover={{ scale: 1.15, y: -2 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ duration: 0.15 }}
+            className="w-8 h-8 rounded-lg bg-white/05 border border-white/10 flex items-center justify-center text-[#9A9088] hover:text-[#FF9A3D] hover:border-[#FF9A3D] transition-colors"
           >
             <Instagram className="w-3.5 h-3.5" />
-          </a>
+          </motion.a>
         </div>
 
         {/* Copyright */}

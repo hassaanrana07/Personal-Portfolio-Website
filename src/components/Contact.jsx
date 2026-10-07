@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Mail, MapPin, Send, User, Tag, Edit3, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 
 export default function Contact() {
@@ -62,12 +63,18 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 relative bg-[#0f0f0f] text-[#f2f2f0]">
+    <section id="contact" className="py-24 relative bg-[#0f0f0f] text-[#f2f2f0] overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 sm:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Left Column: Direct Contact Details */}
-          <div className="lg:col-span-5 space-y-6">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
+            className="lg:col-span-5 space-y-6"
+          >
             <div>
               <div className="mono-text text-xs uppercase tracking-widest text-[#8a8a8a] mb-2 font-bold">
                 06 &mdash; Contact
@@ -104,10 +111,16 @@ export default function Contact() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column: High-Contrast Monochrome Form */}
-          <div className="lg:col-span-7">
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 1, 0.5, 1] }}
+            className="lg:col-span-7"
+          >
             <div className="bg-[#161616] p-8 border border-[#333333] shadow-2xl space-y-4">
               
               {/* Success Banner */}
@@ -185,10 +198,13 @@ export default function Contact() {
                 </div>
 
                 {/* Submit Button */}
-                <button
+                <motion.button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-[#161616] text-[#f2f2f0] border border-[#444444] hover:bg-[#222222] py-3.5 px-6 font-mono font-bold text-sm flex items-center justify-center gap-2 cursor-pointer transition-colors disabled:opacity-50"
+                  whileHover={{ scale: 1.01, backgroundColor: '#222222' }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ duration: 0.15 }}
+                  className="w-full bg-[#161616] text-[#f2f2f0] border border-[#444444] py-3.5 px-6 font-mono font-bold text-sm flex items-center justify-center gap-2 cursor-pointer transition-colors disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <>
@@ -201,12 +217,12 @@ export default function Contact() {
                       <Send className="w-4 h-4" />
                     </>
                   )}
-                </button>
+                </motion.button>
 
               </form>
 
             </div>
-          </div>
+          </motion.div>
 
         </div>
       </div>

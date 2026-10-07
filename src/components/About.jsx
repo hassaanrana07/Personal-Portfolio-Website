@@ -1,30 +1,43 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { MapPin, GraduationCap, Briefcase, Settings, CheckCircle2, Github, Linkedin, Mail, Instagram } from 'lucide-react';
 import { handleGlassMouseMove, handleGlassMouseLeave } from '../utils/useGlassTilt';
 import aboutPortrait from '../assets/about-portrait.jpg';
 
 export default function About() {
   return (
-    <section id="about" className="py-24 relative">
+    <section id="about" className="py-24 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
+          className="mb-12"
+        >
           <div className="mono-text text-xs uppercase tracking-widest text-[#FF9A3D] mb-2 font-bold">
             02 &mdash; About
           </div>
           <h2 className="font-sora text-3xl sm:text-4xl font-extrabold text-[#F5F1EC] tracking-tight">
             Who I Am
           </h2>
-        </div>
+        </motion.div>
 
         {/* Two-Column Glass Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
           {/* Photo Panel (Left): Glass-framed with 16px inner padding and rounded 14px inner corners */}
-          <div className="lg:col-span-5 flex justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
+            className="lg:col-span-5 flex justify-center"
+          >
             <div
-              className="glass w-full max-w-md p-4 flex flex-col items-center justify-between cursor-pointer"
+              className="glass w-full max-w-md p-4 flex flex-col items-center justify-between cursor-pointer group"
               onMouseMove={handleGlassMouseMove}
               onMouseLeave={handleGlassMouseLeave}
             >
@@ -32,12 +45,12 @@ export default function About() {
                 <img
                   src={aboutPortrait}
                   alt="Hassaan Ali Rana"
-                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
               </div>
 
               {/* Status Badge */}
-              <div className="mt-4 w-full bg-white/05 border border-[#FF9A3D]/30 rounded-xl px-4 py-2.5 flex items-center justify-between text-xs">
+              <div className="mt-4 w-full bg-white/05 border border-[#FF9A3D]/30 rounded-xl px-4 py-2.5 flex items-center justify-between text-xs transition-colors group-hover:border-[#FF9A3D]/50">
                 <div className="flex items-center gap-2 text-[#F5F1EC] font-medium">
                   <CheckCircle2 className="w-4 h-4 text-[#FF9A3D]" />
                   <span>Open for Opportunities</span>
@@ -47,10 +60,16 @@ export default function About() {
                 </span>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Larger Glass Text Panel (Right) */}
-          <div className="lg:col-span-7">
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 1, 0.5, 1] }}
+            className="lg:col-span-7"
+          >
             <div
               className="glass p-8 h-full flex flex-col justify-between space-y-6 cursor-pointer"
               onMouseMove={handleGlassMouseMove}
@@ -73,22 +92,22 @@ export default function About() {
               {/* Pill-shaped Badges */}
               <div className="pt-2 border-t border-white/10 space-y-4">
                 <div className="flex flex-wrap gap-2.5">
-                  <span className="inline-flex items-center gap-1.5 bg-white/05 border border-white/10 text-[#9A9088] hover:text-[#FF9A3D] text-xs px-4 py-1.5 rounded-full transition-colors font-medium">
+                  <span className="inline-flex items-center gap-1.5 bg-white/05 border border-white/10 text-[#9A9088] hover:text-[#FF9A3D] text-xs px-4 py-1.5 rounded-full transition-all duration-200 hover:scale-105 font-medium cursor-default">
                     <MapPin className="w-3.5 h-3.5 text-[#FF9A3D]" />
                     <span>Lahore, Pakistan</span>
                   </span>
 
-                  <span className="inline-flex items-center gap-1.5 bg-white/05 border border-white/10 text-[#9A9088] hover:text-[#FF9A3D] text-xs px-4 py-1.5 rounded-full transition-colors font-medium">
+                  <span className="inline-flex items-center gap-1.5 bg-white/05 border border-white/10 text-[#9A9088] hover:text-[#FF9A3D] text-xs px-4 py-1.5 rounded-full transition-all duration-200 hover:scale-105 font-medium cursor-default">
                     <GraduationCap className="w-3.5 h-3.5 text-[#FF5722]" />
                     <span>BS Computer Science</span>
                   </span>
 
-                  <span className="inline-flex items-center gap-1.5 bg-white/05 border border-white/10 text-[#9A9088] hover:text-[#FF9A3D] text-xs px-4 py-1.5 rounded-full transition-colors font-medium">
+                  <span className="inline-flex items-center gap-1.5 bg-white/05 border border-white/10 text-[#9A9088] hover:text-[#FF9A3D] text-xs px-4 py-1.5 rounded-full transition-all duration-200 hover:scale-105 font-medium cursor-default">
                     <Briefcase className="w-3.5 h-3.5 text-[#FFC107]" />
                     <span>Enterprise Apps</span>
                   </span>
 
-                  <span className="inline-flex items-center gap-1.5 bg-white/05 border border-white/10 text-[#9A9088] hover:text-[#FF9A3D] text-xs px-4 py-1.5 rounded-full transition-colors font-medium">
+                  <span className="inline-flex items-center gap-1.5 bg-white/05 border border-white/10 text-[#9A9088] hover:text-[#FF9A3D] text-xs px-4 py-1.5 rounded-full transition-all duration-200 hover:scale-105 font-medium cursor-default">
                     <Settings className="w-3.5 h-3.5 text-[#FF9A3D]" />
                     <span>REST APIs</span>
                   </span>
@@ -96,48 +115,60 @@ export default function About() {
 
                 {/* Social Actions Row */}
                 <div className="flex flex-wrap items-center gap-3 pt-1">
-                  <a
+                  <motion.a
                     href="https://github.com/hassaanrana07"
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-2 bg-white/05 border border-white/10 text-[#F5F1EC] hover:text-[#FF9A3D] hover:border-[#FF9A3D] text-xs font-semibold px-4 py-2 rounded-xl transition-all"
+                    whileHover={{ scale: 1.04, y: -2 }}
+                    whileTap={{ scale: 0.96 }}
+                    transition={{ duration: 0.15 }}
+                    className="inline-flex items-center gap-2 bg-white/05 border border-white/10 text-[#F5F1EC] hover:text-[#FF9A3D] hover:border-[#FF9A3D] text-xs font-semibold px-4 py-2 rounded-xl transition-colors cursor-pointer"
                   >
                     <Github className="w-3.5 h-3.5" />
                     <span>GitHub</span>
-                  </a>
+                  </motion.a>
 
-                  <a
+                  <motion.a
                     href="https://linkedin.com/in/hassaanaliakbar"
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-2 bg-white/05 border border-white/10 text-[#F5F1EC] hover:text-[#FF9A3D] hover:border-[#FF9A3D] text-xs font-semibold px-4 py-2 rounded-xl transition-all"
+                    whileHover={{ scale: 1.04, y: -2 }}
+                    whileTap={{ scale: 0.96 }}
+                    transition={{ duration: 0.15 }}
+                    className="inline-flex items-center gap-2 bg-white/05 border border-white/10 text-[#F5F1EC] hover:text-[#FF9A3D] hover:border-[#FF9A3D] text-xs font-semibold px-4 py-2 rounded-xl transition-colors cursor-pointer"
                   >
                     <Linkedin className="w-3.5 h-3.5" />
                     <span>LinkedIn</span>
-                  </a>
+                  </motion.a>
 
-                  <a
+                  <motion.a
                     href="mailto:hassaanalee07@gmail.com"
-                    className="inline-flex items-center gap-2 bg-white/05 border border-white/10 text-[#F5F1EC] hover:text-[#FF9A3D] hover:border-[#FF9A3D] text-xs font-semibold px-4 py-2 rounded-xl transition-all"
+                    whileHover={{ scale: 1.04, y: -2 }}
+                    whileTap={{ scale: 0.96 }}
+                    transition={{ duration: 0.15 }}
+                    className="inline-flex items-center gap-2 bg-white/05 border border-white/10 text-[#F5F1EC] hover:text-[#FF9A3D] hover:border-[#FF9A3D] text-xs font-semibold px-4 py-2 rounded-xl transition-colors cursor-pointer"
                   >
                     <Mail className="w-3.5 h-3.5" />
                     <span>Email</span>
-                  </a>
+                  </motion.a>
 
-                  <a
+                  <motion.a
                     href="https://www.instagram.com/hassaanaleerana/"
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-2 bg-white/05 border border-white/10 text-[#F5F1EC] hover:text-[#FF9A3D] hover:border-[#FF9A3D] text-xs font-semibold px-4 py-2 rounded-xl transition-all"
+                    whileHover={{ scale: 1.04, y: -2 }}
+                    whileTap={{ scale: 0.96 }}
+                    transition={{ duration: 0.15 }}
+                    className="inline-flex items-center gap-2 bg-white/05 border border-white/10 text-[#F5F1EC] hover:text-[#FF9A3D] hover:border-[#FF9A3D] text-xs font-semibold px-4 py-2 rounded-xl transition-colors cursor-pointer"
                   >
                     <Instagram className="w-3.5 h-3.5" />
                     <span>Instagram</span>
-                  </a>
+                  </motion.a>
                 </div>
               </div>
 
             </div>
-          </div>
+          </motion.div>
 
         </div>
 
