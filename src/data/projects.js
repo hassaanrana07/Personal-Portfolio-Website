@@ -9,91 +9,19 @@ export const projectFilters = [
 
 export const projects = [
   {
-    id: "rentbro",
-    number: "01",
-    slug: "rentbro",
-    name: "RentBro",
-    subtitle: "Property & Rental Management System",
-    category: "Full-Stack Web Application",
-    type: "Full-Stack Web Application",
-    role: "Developer",
-    accentColor: "#10b981",
-    isFeatured: true,
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80",
-    description: "RentBro is a centralized property and rental management platform engineered to streamline real estate inventory listings, tenant lease auditing, digital payment ledgers, and site maintenance tracking.",
-    technologies: ["Laravel 12", "React", "MySQL", "Tailwind CSS"],
-    github: "https://github.com/hassaanrana07/Rent-Bro-Property-and-Rental-Management-System",
-    live: null,
-    preview: "realestate",
-    caseStudy: {
-      overview: "RentBro simplifies property management by providing automated lease tracking, tenant communication portals, maintenance ticketing, and financial collection auditing for multi-unit real estate portfolios.",
-      problem: "Property managers managing multiple residential units struggle with manual lease expiry tracking, uncollected rent balances, and unorganized paper maintenance tickets.",
-      solution: "Developed an intuitive real estate portal in Laravel 12 and React with automated lease renewal dispatches, digital financial ledgers, and structured property catalog filters.",
-      features: [
-        { title: "Property Inventory Catalog", desc: "Catalog with pricing badges, location metadata, and unit availability tags." },
-        { title: "Lease Auditing Engine", desc: "Tenant lease tracking with automated payment and renewal notifications." },
-        { title: "Maintenance Request Ticketing", desc: "Ticketing portal connecting tenants directly with property managers." },
-        { title: "Financial Ledger Audit Log", desc: "Ledger tracking for rent collections and security deposits." }
-      ],
-      architecture: {
-        frontend: "React SPA with Tailwind CSS and custom financial chart visualizers.",
-        backend: "Laravel 12 MVC handling lease calculations and notification queues.",
-        database: "MySQL relational schema with spatial indexing for property locations.",
-        authentication: "Session-based multi-guard authentication for Landlords and Tenants.",
-        apis: "REST APIs powering tenant dashboards and property search filters.",
-        deployment: "Cloud Linux VPS with Redis queue workers for email dispatches."
-      },
-      folderStructure: `RentBro/
-├── app/
-│   ├── Http/Controllers/
-│   │   ├── PropertyController.php
-│   │   ├── LeaseController.php
-│   │   └── MaintenanceTicketController.php
-│   ├── Models/
-│   │   ├── Property.php
-│   │   ├── Tenant.php
-│   │   └── Lease.php
-│   └── Notifications/LeaseExpiryNotification.php
-└── resources/js/
-    ├── Pages/Properties/
-    └── Pages/Tenants/`,
-      modules: [
-        { name: "Property Catalog Engine", desc: "Manages active property listings, photos, amenities, and rental rates." },
-        { name: "Lease Audit Ledger", desc: "Calculates tenant payment balances, overdue fees, and lease end dates." },
-        { name: "Maintenance Ticketing Gateway", desc: "Routes tenant maintenance issues directly to assigned property managers." }
-      ],
-      dataModel: [
-        { table: "properties", details: "id, title, address, monthly_rent, status, unit_type" },
-        { table: "leases", details: "id, property_id, tenant_id, start_date, end_date, rent_amount" },
-        { table: "payments", details: "id, lease_id, amount_paid, payment_date, transaction_status" }
-      ],
-      auth: "Multi-guard session authentication keeping tenant self-service portals isolated from administrative financial ledgers.",
-      decisions: [
-        { title: "Relational Schema Design", rationale: "Strict foreign key constraints ensure historical financial payments remain preserved even when tenant accounts deactivate." }
-      ],
-      challenges: [
-        { challenge: "Slow property search response times across large property catalogs.", solution: "Added compound database indexing on (status, city, monthly_rent)." }
-      ],
-      futureImprovements: [
-        "Stripe & local payment gateway integration for direct tenant rent payments.",
-        "Automated PDF lease agreement generation and digital signature support."
-      ]
-    }
-  },
-  {
     id: "brickbeam",
-    number: "02",
+    number: "01",
     slug: "brickbeam",
     name: "BrickBeam",
-    subtitle: "Construction Resource & Operations Platform",
+    subtitle: "Construction Operations & Resource Management System",
     category: "Full-Stack Web Application",
     type: "Full-Stack Web Application",
-    role: "Developer",
+    role: "Lead Developer",
     accentColor: "#f59e0b",
-    isFeatured: false,
+    isFeatured: true,
     image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80",
-    description: "BrickBeam is a construction management platform designed to organize projects, tasks, teams, building site budgets, and financial performance in one centralized system.",
-    technologies: ["Laravel 12", "React", "MySQL", "Tailwind CSS"],
+    description: "BrickBeam is an enterprise construction operations management platform designed to centralize building projects, task tracking, site material allocation, contractor sign-offs, and budget performance into a unified system.",
+    technologies: ["Laravel 12", "React", "MySQL 8.0", "Redis", "Tailwind CSS"],
     github: "https://github.com/hassaanrana07/BrickBeam-Construction-Management-System-",
     live: null,
     preview: "construction",
@@ -149,6 +77,78 @@ export const projects = [
       futureImprovements: [
         "BIM 3D CAD model viewer integration inside the project phase dashboard.",
         "Offline-first mobile PWA synchronization for remote construction sites."
+      ]
+    }
+  },
+  {
+    id: "rentbro",
+    number: "02",
+    slug: "rentbro",
+    name: "RentBro",
+    subtitle: "Property & Rental Management System",
+    category: "Full-Stack Web Application",
+    type: "Full-Stack Web Application",
+    role: "Developer",
+    accentColor: "#10b981",
+    isFeatured: false,
+    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80",
+    description: "RentBro is a centralized property and rental management platform engineered to streamline real estate inventory listings, tenant lease auditing, digital payment ledgers, and site maintenance tracking.",
+    technologies: ["Laravel 12", "React", "MySQL 8.0", "Tailwind CSS"],
+    github: "https://github.com/hassaanrana07/Rent-Bro-Property-and-Rental-Management-System",
+    live: null,
+    preview: "realestate",
+    caseStudy: {
+      overview: "RentBro simplifies property management by providing automated lease tracking, tenant communication portals, maintenance ticketing, and financial collection auditing for multi-unit real estate portfolios.",
+      problem: "Property managers managing multiple residential units struggle with manual lease expiry tracking, uncollected rent balances, and unorganized paper maintenance tickets.",
+      solution: "Developed an intuitive real estate portal in Laravel 12 and React with automated lease renewal dispatches, digital financial ledgers, and structured property catalog filters.",
+      features: [
+        { title: "Property Inventory Catalog", desc: "Catalog with pricing badges, location metadata, and unit availability tags." },
+        { title: "Lease Auditing Engine", desc: "Tenant lease tracking with automated payment and renewal notifications." },
+        { title: "Maintenance Request Ticketing", desc: "Ticketing portal connecting tenants directly with property managers." },
+        { title: "Financial Ledger Audit Log", desc: "Ledger tracking for rent collections and security deposits." }
+      ],
+      architecture: {
+        frontend: "React SPA with Tailwind CSS and custom financial chart visualizers.",
+        backend: "Laravel 12 MVC handling lease calculations and notification queues.",
+        database: "MySQL relational schema with spatial indexing for property locations.",
+        authentication: "Session-based multi-guard authentication for Landlords and Tenants.",
+        apis: "REST APIs powering tenant dashboards and property search filters.",
+        deployment: "Cloud Linux VPS with Redis queue workers for email dispatches."
+      },
+      folderStructure: `RentBro/
+├── app/
+│   ├── Http/Controllers/
+│   │   ├── PropertyController.php
+│   │   ├── LeaseController.php
+│   │   └── MaintenanceTicketController.php
+│   ├── Models/
+│   │   ├── Property.php
+│   │   ├── Tenant.php
+│   │   └── Lease.php
+│   └── Notifications/LeaseExpiryNotification.php
+└── resources/js/
+    ├── Pages/Properties/
+    └── Pages/Tenants/`,
+      modules: [
+        { name: "Property Catalog Engine", desc: "Manages active property listings, photos, amenities, and rental rates." },
+        { name: "Lease Audit Ledger", desc: "Calculates tenant payment balances, overdue fees, and lease end dates." },
+        { name: "Maintenance Ticketing Gateway", desc: "Routes tenant maintenance issues directly to assigned property managers." }
+      ],
+      dataModel: [
+        { table: "properties", details: "id, title, address, monthly_rent, status, unit_type" },
+        { table: "leases", details: "id, property_id, tenant_id, start_date, end_date, rent_amount" },
+        { table: "payments", details: "id, lease_id, amount_paid, payment_date, transaction_status" }
+      ],
+      auth: "Multi-guard session authentication keeping tenant self-service portals isolated from administrative financial ledgers.",
+      decisions: [
+        { title: "Relational Schema Design", rationale: "Strict foreign key constraints ensure historical financial payments remain preserved even when tenant accounts deactivate." }
+      ],
+      challenges: [
+        { challenge: "Slow property search response times across large property catalogs.", solution: "Added compound database indexing on (status, city, monthly_rent)." }
+      ],
+      futureImprovements: [
+        "Stripe & local payment gateway integration for direct tenant rent payments.",
+        "Automated PDF lease agreement generation and digital signature support."
       ]
     }
   },

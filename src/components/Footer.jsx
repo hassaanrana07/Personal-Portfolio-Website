@@ -2,9 +2,17 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, Instagram } from 'lucide-react';
 import { handleGlassMouseMove, handleGlassMouseLeave } from '../utils/useGlassTilt';
+import { usePortfolioData } from '../hooks/usePortfolioData';
 
 export default function Footer() {
+  const { profile } = usePortfolioData();
   const currentYear = new Date().getFullYear();
+
+  const fullName = profile?.fullName || 'Hassaan Ali Akbar';
+  const githubUrl = profile?.githubUrl || 'https://github.com/hassaanrana07';
+  const linkedinUrl = profile?.linkedinUrl || 'https://linkedin.com/in/hassaanaliakbar';
+  const email = profile?.email || 'hassaanalee07@gmail.com';
+  const instagramUrl = profile?.instagramUrl || 'https://www.instagram.com/hassaanaleerana/';
 
   return (
     <footer className="py-8 text-xs text-[#9A9088] relative z-10">
@@ -23,10 +31,11 @@ export default function Footer() {
         {/* Social Links */}
         <div className="flex items-center gap-3">
           <motion.a
-            href="https://github.com/hassaanrana07"
+            href={githubUrl}
             target="_blank"
             rel="noreferrer"
-            aria-label="GitHub"
+            aria-label="GitHub Profile"
+            title="GitHub"
             whileHover={{ scale: 1.15, y: -2 }}
             whileTap={{ scale: 0.9 }}
             transition={{ duration: 0.15 }}
@@ -36,10 +45,11 @@ export default function Footer() {
           </motion.a>
 
           <motion.a
-            href="https://linkedin.com/in/hassaanaliakbar"
+            href={linkedinUrl}
             target="_blank"
             rel="noreferrer"
             aria-label="LinkedIn"
+            title="LinkedIn"
             whileHover={{ scale: 1.15, y: -2 }}
             whileTap={{ scale: 0.9 }}
             transition={{ duration: 0.15 }}
@@ -49,8 +59,9 @@ export default function Footer() {
           </motion.a>
 
           <motion.a
-            href="mailto:hassaanalee07@gmail.com"
+            href={`mailto:${email}`}
             aria-label="Email"
+            title="Email"
             whileHover={{ scale: 1.15, y: -2 }}
             whileTap={{ scale: 0.9 }}
             transition={{ duration: 0.15 }}
@@ -60,10 +71,11 @@ export default function Footer() {
           </motion.a>
 
           <motion.a
-            href="https://www.instagram.com/hassaanaleerana/"
+            href={instagramUrl}
             target="_blank"
             rel="noreferrer"
             aria-label="Instagram"
+            title="Instagram"
             whileHover={{ scale: 1.15, y: -2 }}
             whileTap={{ scale: 0.9 }}
             transition={{ duration: 0.15 }}
@@ -75,7 +87,7 @@ export default function Footer() {
 
         {/* Copyright */}
         <div className="text-[#9A9088] font-mono">
-          &copy; {currentYear} Hassaan Ali Akbar
+          &copy; {currentYear} {fullName}
         </div>
 
       </div>

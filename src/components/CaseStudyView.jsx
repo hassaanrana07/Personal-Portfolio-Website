@@ -1,21 +1,24 @@
 import React, { useEffect } from 'react';
 import { ArrowLeft, ArrowRight, Github, FolderTree, Database, Cpu, ShieldCheck } from 'lucide-react';
-import { projects } from '../data/projects';
+import usePortfolioData from '../hooks/usePortfolioData';
 import SocialPreview from './project-previews/SocialPreview';
 import CmsPreview from './project-previews/CmsPreview';
 import ProjectManagementPreview from './project-previews/ProjectManagementPreview';
 import AirQualityPreview from './project-previews/AirQualityPreview';
 import ConstructionPreview from './project-previews/ConstructionPreview';
 import RealEstatePreview from './project-previews/RealEstatePreview';
+import NeutralMockupPreview from './project-previews/NeutralMockupPreview';
 
 export default function CaseStudyView({ projectSlug, onBack, onNavigateSlug }) {
+  const { projects, getProjectBySlug } = usePortfolioData();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [projectSlug]);
 
   // Retrieve project by slug
   const projectIndex = projects.findIndex((p) => p.slug === projectSlug || p.id === projectSlug);
-  const project = projects[projectIndex];
+  const project = projectIndex !== -1 ? projects[projectIndex] : getProjectBySlug(projectSlug);
 
   // If invalid project slug requested: clean error state
   if (!project) {
@@ -44,21 +47,38 @@ export default function CaseStudyView({ projectSlug, onBack, onNavigateSlug }) {
   const nextProject = projects[(projectIndex + 1) % totalProjects];
 
   const renderPreviewComponent = () => {
-    switch (project.preview) {
+    if (project.image) {
+      return (
+        <div className="w-full h-full relative overflow-hidden bg-[#040306]">
+          <img
+            src={project.image}
+            alt={`${project.name} Screenshot`}
+            className="w-full h-full object-cover object-top filter brightness-95"
+            loading="lazy"
+          />
+        </div>
+      );
+    }
+
+    const previewKey = (project.preview || '').toLowerCase().trim();
+    switch (previewKey) {
       case 'social':
         return <SocialPreview />;
       case 'cms':
         return <CmsPreview />;
       case 'management':
+      case 'projectmanagement':
         return <ProjectManagementPreview />;
       case 'airquality':
+      case 'environment':
+      case 'iot':
         return <AirQualityPreview />;
       case 'construction':
         return <ConstructionPreview />;
       case 'realestate':
         return <RealEstatePreview />;
       default:
-        return <ConstructionPreview />;
+        return <NeutralMockupPreview projectName={project.name} accentColor={project.accentColor || '#FF9A3D'} />;
     }
   };
 
@@ -134,7 +154,7 @@ export default function CaseStudyView({ projectSlug, onBack, onNavigateSlug }) {
             <span className="text-[#8a8a8a] uppercase text-[10px] tracking-wider block font-bold mb-1">
               TECH STACK
             </span>
-            <span className="text-[#f2f2f0] font-medium">{project.technologies.join(" · ")}</span>
+            <span className="text-[#f2f2f0] font-medium">{(project.technologies || []).join(" · ")}</span>
           </div>
 
           <div>

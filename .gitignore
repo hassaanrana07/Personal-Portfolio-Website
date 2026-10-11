@@ -12,6 +12,13 @@ node_modules
 dist
 dist-ssr
 *.local
+.env
+.env.*
+!.env.example
+server/.env
+server/.env.*
+!server/.env.example
+server/node_modules
 
 # Editor directories and files
 .vscode/*
@@ -24,3 +31,11 @@ dist-ssr
 *.sln
 *.sw?
 *.tsbuildinfo
+
+# Root-level legacy files (prevent accidental re-upload)
+/1000148492.png
+/Hassaan Ali Akbar Resume.pdf
+
+# Server uploads (user-generated media)
+server/uploads/*
+!server/uploads/.gitkeep

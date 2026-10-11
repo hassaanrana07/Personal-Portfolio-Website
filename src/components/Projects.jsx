@@ -1,10 +1,11 @@
 import React, { useRef } from 'react';
 import { motion, useScroll } from 'framer-motion';
-import { projects } from '../data/projects';
+import usePortfolioData from '../hooks/usePortfolioData';
 import ProjectCard from './ProjectCard';
 
 export default function Projects({ onOpenCaseStudySlug }) {
   const containerRef = useRef(null);
+  const { projects } = usePortfolioData();
 
   const { scrollYProgress } = useScroll({
     target: containerRef,

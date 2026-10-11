@@ -1,19 +1,9 @@
 import React, { useState } from 'react';
+import usePortfolioData from '../hooks/usePortfolioData';
 
 export default function Services() {
   const [selectedServiceTitle, setSelectedServiceTitle] = useState(null);
-
-  const serviceOfferings = [
-    { title: "FULL STACK DEVELOPMENT", desc: "End-to-End Web Applications" },
-    { title: "FRONTEND ARCHITECTURE", desc: "React · Vue · Modern UI/UX" },
-    { title: "BACKEND ENGINEERING", desc: "Laravel 12 · Node.js · Express" },
-    { title: "DATABASE SYSTEMS", desc: "MySQL · PostgreSQL · MongoDB" },
-    { title: "CMS & SAAS PLATFORMS", desc: "Headless Content Engines & RBAC" },
-    { title: "REAL-TIME WEBSOCKETS", desc: "Low-Latency Event Streaming" },
-    { title: "ENTERPRISE DASHBOARDS", desc: "Data Analytics & Workflows" },
-    { title: "RESTFUL API ARCHITECTURE", desc: "Secure JSON Microservices" },
-    { title: "CLOUD DEPLOYMENT", desc: "Nginx · Linux VPS · CI/CD" },
-  ];
+  const { services } = usePortfolioData();
 
   const handleServiceClick = (title) => {
     // Toggle selection: click selected service again to unselect & resume scrolling
@@ -49,8 +39,8 @@ export default function Services() {
           className="animate-marquee-left group-hover:[animation-play-state:paused] flex items-center space-x-12 whitespace-nowrap"
           style={{ animationPlayState: isPaused ? 'paused' : undefined }}
         >
-          {/* Double map for seamless infinite looping */}
-          {[...serviceOfferings, ...serviceOfferings].map((service, idx) => {
+          {/* Double or quad map for seamless infinite looping */}
+          {(services.length < 8 ? [...services, ...services, ...services, ...services] : [...services, ...services]).map((service, idx) => {
             const isSelected = selectedServiceTitle === service.title;
             return (
               <div

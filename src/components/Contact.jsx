@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, MapPin, Send, User, Tag, Edit3, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { usePortfolioData } from '../hooks/usePortfolioData';
 
 export default function Contact() {
+  const { profile } = usePortfolioData();
+  const contactEmail = profile?.email || 'hassaanalee07@gmail.com';
+  const contactLocation = profile?.location || 'Lahore, Pakistan';
+
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState(false);
@@ -15,6 +20,8 @@ export default function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
     const { name, email, subject, message } = formData;
 
     if (!name.trim() || !email.trim() || !subject.trim() || !message.trim()) {
@@ -31,14 +38,14 @@ export default function Contact() {
     setErrorMsg('');
 
     try {
-      const response = await fetch('https://api.web3forms.com/submit', {
+      const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      const response = await fetch(`${baseUrl}/api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
         body: JSON.stringify({
-          access_key: '7fa7d49a-06af-46d8-a6d9-f0e6f0672537',
           name: name.trim(),
           email: email.trim(),
           subject: subject.trim(),
@@ -48,7 +55,7 @@ export default function Contact() {
 
       const result = await response.json();
 
-      if (result.success) {
+      if (response.ok && result.success) {
         setSuccessMsg(true);
         setFormData({ name: '', email: '', subject: '', message: '' });
         setTimeout(() => setSuccessMsg(false), 6000);
@@ -76,10 +83,10 @@ export default function Contact() {
             className="lg:col-span-5 space-y-6"
           >
             <div>
-              <div className="mono-text text-xs uppercase tracking-widest text-[#8a8a8a] mb-2 font-bold">
-                06 &mdash; Contact
+              <div className="mono-text text-xs uppercase tracking-widest text-[#FF9A3D] mb-2 font-bold">
+                07 &mdash; Contact
               </div>
-              <h2 className="font-sora text-3xl sm:text-4xl font-extrabold text-[#f2f2f0] tracking-tight">
+              <h2 className="font-sora text-3xl sm:text-5xl font-extrabold text-[#f2f2f0] tracking-tight">
                 Get in Touch
               </h2>
             </div>
@@ -90,30 +97,30 @@ export default function Contact() {
 
             <div className="space-y-4 pt-2 font-mono text-sm">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 border border-[#444444] bg-[#161616] flex items-center justify-center text-[#f2f2f0]">
+                <div className="w-12 h-12 rounded-xl border border-white/15 bg-[#161616] flex items-center justify-center text-[#FF9A3D] shadow-md">
                   <Mail className="w-5 h-5" />
                 </div>
                 <div>
                   <div className="text-xs text-[#8a8a8a] uppercase font-bold">Email</div>
-                  <a href="mailto:hassaanalee07@gmail.com" className="text-sm font-medium text-[#f2f2f0] hover:text-[#8a8a8a] transition-colors">
-                    hassaanalee07@gmail.com
+                  <a href={`mailto:${contactEmail}`} className="text-sm font-medium text-[#f2f2f0] hover:text-[#FF9A3D] transition-colors">
+                    {contactEmail}
                   </a>
                 </div>
               </div>
 
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 border border-[#444444] bg-[#161616] flex items-center justify-center text-[#f2f2f0]">
+                <div className="w-12 h-12 rounded-xl border border-white/15 bg-[#161616] flex items-center justify-center text-[#FF9A3D] shadow-md">
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div>
                   <div className="text-xs text-[#8a8a8a] uppercase font-bold">Location</div>
-                  <span className="text-sm font-medium text-[#f2f2f0]">Lahore, Pakistan</span>
+                  <span className="text-sm font-medium text-[#f2f2f0]">{contactLocation}</span>
                 </div>
               </div>
             </div>
           </motion.div>
 
-          {/* Right Column: High-Contrast Monochrome Form */}
+          {/* Right Column: Refined Input Styling Form */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -121,11 +128,11 @@ export default function Contact() {
             transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 1, 0.5, 1] }}
             className="lg:col-span-7"
           >
-            <div className="bg-[#161616] p-8 border border-[#333333] shadow-2xl space-y-4">
+            <div className="bg-[#141416]/90 backdrop-blur-xl p-6 sm:p-9 rounded-2xl border border-white/15 shadow-2xl space-y-5">
               
               {/* Success Banner */}
               {successMsg && (
-                <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-2 font-mono">
+                <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-2 font-mono">
                   <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
                   <span>Message sent successfully! I will reply promptly.</span>
                 </div>
@@ -133,7 +140,7 @@ export default function Contact() {
 
               {/* Error Banner */}
               {errorMsg && (
-                <div className="p-4 bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-2 font-mono">
+                <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-2 font-mono">
                   <AlertCircle className="w-4 h-4 flex-shrink-0" />
                   <span>{errorMsg}</span>
                 </div>
@@ -149,8 +156,8 @@ export default function Contact() {
                     aria-label="Your Name"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="Name"
-                    className="w-full bg-[#151515] border border-[#333333] text-[#f2f2f0] pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-[#b8b8b5] transition-colors placeholder-[#8a8a8a]"
+                    placeholder="Your Name"
+                    className="w-full bg-[#111113] border border-white/15 rounded-xl text-[#f2f2f0] pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-[#FF9A3D] focus:ring-1 focus:ring-[#FF9A3D]/40 transition-all placeholder-[#71717a]"
                   />
                   <User className="w-4 h-4 text-[#8a8a8a] absolute left-3.5 top-3.5 pointer-events-none" />
                 </div>
@@ -163,8 +170,8 @@ export default function Contact() {
                     aria-label="Your Email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="Email"
-                    className="w-full bg-[#151515] border border-[#333333] text-[#f2f2f0] pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-[#b8b8b5] transition-colors placeholder-[#8a8a8a]"
+                    placeholder="Your Email"
+                    className="w-full bg-[#111113] border border-white/15 rounded-xl text-[#f2f2f0] pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-[#FF9A3D] focus:ring-1 focus:ring-[#FF9A3D]/40 transition-all placeholder-[#71717a]"
                   />
                   <Mail className="w-4 h-4 text-[#8a8a8a] absolute left-3.5 top-3.5 pointer-events-none" />
                 </div>
@@ -177,8 +184,8 @@ export default function Contact() {
                     aria-label="Message Subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    placeholder="Subject"
-                    className="w-full bg-[#151515] border border-[#333333] text-[#f2f2f0] pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-[#b8b8b5] transition-colors placeholder-[#8a8a8a]"
+                    placeholder="Subject / Project Inquiry"
+                    className="w-full bg-[#111113] border border-white/15 rounded-xl text-[#f2f2f0] pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-[#FF9A3D] focus:ring-1 focus:ring-[#FF9A3D]/40 transition-all placeholder-[#71717a]"
                   />
                   <Tag className="w-4 h-4 text-[#8a8a8a] absolute left-3.5 top-3.5 pointer-events-none" />
                 </div>
@@ -191,8 +198,8 @@ export default function Contact() {
                     aria-label="Your Message"
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Your Message"
-                    className="w-full bg-[#151515] border border-[#333333] text-[#f2f2f0] pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-[#b8b8b5] transition-colors placeholder-[#8a8a8a] resize-none"
+                    placeholder="Write your message here..."
+                    className="w-full bg-[#111113] border border-white/15 rounded-xl text-[#f2f2f0] pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-[#FF9A3D] focus:ring-1 focus:ring-[#FF9A3D]/40 transition-all placeholder-[#71717a] resize-none"
                   ></textarea>
                   <Edit3 className="w-4 h-4 text-[#8a8a8a] absolute left-3.5 top-3.5 pointer-events-none" />
                 </div>
@@ -201,19 +208,19 @@ export default function Contact() {
                 <motion.button
                   type="submit"
                   disabled={isSubmitting}
-                  whileHover={{ scale: 1.01, backgroundColor: '#222222' }}
+                  whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ duration: 0.15 }}
-                  className="w-full bg-[#161616] text-[#f2f2f0] border border-[#444444] py-3.5 px-6 font-mono font-bold text-sm flex items-center justify-center gap-2 cursor-pointer transition-colors disabled:opacity-50"
+                  className="w-full bg-[#FF9A3D] hover:bg-[#ffaa5a] text-[#0D0B0A] font-mono font-bold text-sm py-3.5 px-6 rounded-xl shadow-lg shadow-[#FF9A3D]/20 flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>SUBMITTING...</span>
+                      <span>SENDING MESSAGE...</span>
                     </>
                   ) : (
                     <>
-                      <span>SUBMIT</span>
+                      <span>SEND MESSAGE</span>
                       <Send className="w-4 h-4" />
                     </>
                   )}

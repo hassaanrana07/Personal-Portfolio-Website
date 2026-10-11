@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { X, Github, ArrowLeft, ArrowRight, FolderTree, Database, ShieldCheck, Cpu } from 'lucide-react';
-import { projects } from '../data/projects';
+import usePortfolioData from '../hooks/usePortfolioData';
 
 export default function ProjectModal({ project, onClose, onSelectProject }) {
+  const { projects } = usePortfolioData();
+
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
@@ -10,9 +12,10 @@ export default function ProjectModal({ project, onClose, onSelectProject }) {
     };
   }, [project]);
 
-  const currentIndex = projects.findIndex((p) => p.id === project.id);
-  const prevProject = projects[(currentIndex - 1 + projects.length) % projects.length];
-  const nextProject = projects[(currentIndex + 1) % projects.length];
+  const currentIndex = projects.findIndex((p) => p.id === project.id || p.slug === project.slug);
+  const totalProjects = projects.length;
+  const prevProject = totalProjects > 0 ? projects[(currentIndex - 1 + totalProjects) % totalProjects] : project;
+  const nextProject = totalProjects > 0 ? projects[(currentIndex + 1) % totalProjects] : project;
 
   const cs = project.caseStudy || {};
 
@@ -28,7 +31,7 @@ export default function ProjectModal({ project, onClose, onSelectProject }) {
             <span className="text-[#f2f2f0] font-bold uppercase tracking-widest mr-3">
               TECHNICAL CASE STUDY
             </span>
-            <span>PROJECT {project.number} / 06</span>
+            <span>PROJECT {project.number} / {String(totalProjects).padStart(2, '0')}</span>
           </div>
 
           <button

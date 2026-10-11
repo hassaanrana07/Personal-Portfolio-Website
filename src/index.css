@@ -8,10 +8,12 @@
     --bg-alt: #161616;
     --text-primary: #f2f2f0;
     --text-muted: #8a8a8a;
+    color-scheme: dark;
   }
 
   html {
     background-color: #0f0f0f;
+    color-scheme: dark;
   }
 
   body {
@@ -23,6 +25,40 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Sora', sans-serif;
+  }
+
+  /* Accessible Dark Form Controls & Autofill Protection */
+  input, textarea, select {
+    color-scheme: dark;
+    background-color: #171412;
+    color: #F5F1EC;
+  }
+
+  input::placeholder, textarea::placeholder {
+    color: #8A8078;
+    opacity: 1;
+  }
+
+  select option {
+    background-color: #171412 !important;
+    color: #F5F1EC !important;
+  }
+
+  /* Browser Autofill Protection (Prevent white autofill backgrounds) */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #F5F1EC !important;
+    -webkit-box-shadow: 0 0 0px 1000px #171412 inset !important;
+    box-shadow: 0 0 0px 1000px #171412 inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+    caret-color: #FF9A3D !important;
   }
 }
 
@@ -136,7 +172,14 @@
   width: max-content;
   will-change: transform;
   backface-visibility: hidden;
-  animation: marquee-left 30s linear infinite;
+  animation: marquee-left 32s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-left,
+  .animate-marquee-right {
+    animation-duration: 120s;
+  }
 }
 
 /* Custom Scrollbar */

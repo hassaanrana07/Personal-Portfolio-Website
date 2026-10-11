@@ -1,7 +1,8 @@
 import React from 'react';
-import { projectFilters } from '../data/projects';
+import usePortfolioData from '../hooks/usePortfolioData';
 
 export default function ProjectFilters({ activeFilter, onFilterChange }) {
+  const { projectFilters } = usePortfolioData();
   return (
     <div className="flex flex-wrap gap-2 mb-8">
       {projectFilters.map((filter) => {

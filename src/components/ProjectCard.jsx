@@ -7,36 +7,41 @@ import ProjectManagementPreview from './project-previews/ProjectManagementPrevie
 import AirQualityPreview from './project-previews/AirQualityPreview';
 import ConstructionPreview from './project-previews/ConstructionPreview';
 import RealEstatePreview from './project-previews/RealEstatePreview';
+import NeutralMockupPreview from './project-previews/NeutralMockupPreview';
 
 export default function ProjectCard({ project, index, totalCards, progress, range, targetScale, onOpenCaseStudySlug }) {
   const scale = useTransform(progress, range, [1, targetScale]);
   const [viewMode, setViewMode] = useState('image'); // 'image' or 'interactive'
   const [imgError, setImgError] = useState(false);
 
+  const accentColor = project.accentColor || '#FF9A3D';
+
   const renderMainPreview = () => {
-    switch (project.preview) {
+    const previewKey = (project.preview || '').toLowerCase().trim();
+    switch (previewKey) {
       case 'social':
         return <SocialPreview />;
       case 'cms':
         return <CmsPreview />;
       case 'management':
+      case 'projectmanagement':
         return <ProjectManagementPreview />;
       case 'airquality':
+      case 'environment':
+      case 'iot':
         return <AirQualityPreview />;
       case 'construction':
         return <ConstructionPreview />;
       case 'realestate':
         return <RealEstatePreview />;
       default:
-        return <ConstructionPreview />;
+        return <NeutralMockupPreview projectName={project.name} accentColor={accentColor} />;
     }
   };
 
   const primaryUrl = project.live || project.github;
   const primaryLabel = project.live ? 'Live Demo' : 'View Code';
   const PrimaryIcon = project.live ? ExternalLink : Github;
-
-  const accentColor = project.accentColor || '#FF9A3D';
 
   // Framer Motion Synchronized Staggered Variants for Smooth Scroll Reveal
   const cardVariants = {

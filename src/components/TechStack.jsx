@@ -1,15 +1,41 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { usePortfolioData } from '../hooks/usePortfolioData';
+
+export function normalizeSkillCategory(rawCat) {
+  if (!rawCat) return 'Tools / Cloud';
+  const c = String(rawCat).trim().toLowerCase();
+  if (c === 'frontend' || c.includes('front') || c.includes('ui') || c.includes('client')) {
+    return 'Frontend';
+  }
+  if (c === 'backend' || c.includes('back') || c.includes('server') || c.includes('api')) {
+    return 'Backend';
+  }
+  if (c === 'database' || c === 'databases' || c.includes('data') || c.includes('sql') || c.includes('nosql') || c.includes('db')) {
+    return 'Databases';
+  }
+  if (c.includes('tool') || c.includes('cloud') || c.includes('devops') || c.includes('git') || c.includes('docker') || c.includes('aws')) {
+    return 'Tools / Cloud';
+  }
+  return rawCat.trim();
+}
 
 export default function TechStack() {
   const containerRef = useRef(null);
   const mountRef = useRef(null);
   const [hoveredSkill, setHoveredSkill] = useState(null);
   const [selectedSkill, setSelectedSkill] = useState(null);
+  const [activeCategory, setActiveCategory] = useState('All');
+  const { skills } = usePortfolioData();
 
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
+
+    // Clean previous canvases if any exist
+    while (mount.firstChild) {
+      mount.removeChild(mount.firstChild);
+    }
 
     let width = mount.clientWidth;
     let height = mount.clientHeight;
@@ -364,32 +390,7 @@ export default function TechStack() {
 
     scene.add(sunGroup);
 
-    // --- SKILL METADATA & DESCRIPTIONS ---
-    const skillDetails = {
-      "HTML5": { category: "Frontend", colorHex: "#FFE9A8", desc: "Modern Semantic Markup & Web Accessibility Standards" },
-      "CSS3": { category: "Frontend", colorHex: "#FFE9A8", desc: "Responsive Layouts, Custom Properties, Flexbox & Grid Systems" },
-      "JavaScript": { category: "Frontend", colorHex: "#FFE9A8", desc: "ES6+ Modern Asynchronous JS Engine & Web APIs" },
-      "React.js": { category: "Frontend", colorHex: "#FFE9A8", desc: "Hooks, Context API, Virtual DOM & Modular UI Components" },
-      "Vue.js": { category: "Frontend", colorHex: "#FFE9A8", desc: "Vue 3 Composition API, Pinia State & Reactive Templates" },
-      "Tailwind CSS": { category: "Frontend", colorHex: "#FFE9A8", desc: "Utility-First CSS Framework & Rapid Design System Architecture" },
-      "Bootstrap": { category: "Frontend", colorHex: "#FFE9A8", desc: "Responsive Grid System & UI Component Frameworks" },
-      "WordPress": { category: "Frontend", colorHex: "#FFE9A8", desc: "Custom Headless CMS, Theme Development & REST APIs" },
-      "Node.js": { category: "Backend", colorHex: "#FF9A3D", desc: "Asynchronous Event-Driven Backend Server Runtime" },
-      "Express.js": { category: "Backend", colorHex: "#FF9A3D", desc: "Fast RESTful API Services & Middleware Architecture" },
-      "Laravel": { category: "Backend", colorHex: "#FF9A3D", desc: "Eloquent ORM, Blade Templates, Inertia.js & Modular Backends" },
-      "PHP": { category: "Backend", colorHex: "#FF9A3D", desc: "Modern Object-Oriented Backend Engineering & Server Logic" },
-      "JWT / RBAC": { category: "Backend", colorHex: "#FF9A3D", desc: "Secure JSON Web Tokens & Multi-Role Access Control Systems" },
-      "PostgreSQL": { category: "Databases", colorHex: "#FF5722", desc: "Advanced Relational Database Queries, Indexing & JSON Types" },
-      "MySQL": { category: "Databases", colorHex: "#FF5722", desc: "Relational Schema Architecture, Index Optimization & Transactions" },
-      "MongoDB": { category: "Databases", colorHex: "#FF5722", desc: "NoSQL Document Storage, Aggregations & Flexible Data Models" },
-      "Redis": { category: "Databases", colorHex: "#FF5722", desc: "In-Memory Key-Value Cache, Session Storage & Pub/Sub Messaging" },
-      "Git": { category: "Tools / Cloud", colorHex: "#a855f7", desc: "Distributed Version Control, Branching & Merge Workflows" },
-      "GitHub": { category: "Tools / Cloud", colorHex: "#a855f7", desc: "CI/CD Workflows, Pull Requests & Collaborative Code Review" },
-      "Docker": { category: "Tools / Cloud", colorHex: "#a855f7", desc: "Containerization, Multi-Stage Dockerfiles & Compose Networks" },
-      "AWS": { category: "Tools / Cloud", colorHex: "#a855f7", desc: "Cloud Deployment, S3 Bucket Assets, EC2 Instances & Infrastructure" }
-    };
-
-    // --- OFFICIAL TECHNOLOGY SVG LOGO URLS ---
+    // --- OFFICIAL TECHNOLOGY SVG LOGO URLS (CDN FALLBACK MAP) ---
     const logoPaths = {
       "React.js": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg",
       "Vue.js": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg",
@@ -464,60 +465,48 @@ export default function TechStack() {
       return sprite;
     }
 
-    // --- ORBIT RINGS & STAGGERED ANGLES (PREVENTS NODE COLLISIONS) ---
-    const orbitCategories = [
-      {
-        name: 'Frontend Core',
-        colorHex: '#FFE9A8',
-        colorNum: 0xffe9a8,
-        radius: 5.4,
-        speed: 0.008,
-        angleOffset: 0,
-        skills: ['HTML5', 'CSS3', 'JavaScript', 'React.js']
-      },
-      {
-        name: 'Frontend & Frameworks',
-        colorHex: '#FFE9A8',
-        colorNum: 0xffe9a8,
-        radius: 8.8,
-        speed: 0.006,
-        angleOffset: Math.PI / 4,
-        skills: ['Vue.js', 'Tailwind CSS', 'Bootstrap', 'WordPress']
-      },
-      {
-        name: 'Backend Systems',
-        colorHex: '#FF9A3D',
-        colorNum: 0xff9a3d,
-        radius: 12.2,
-        speed: 0.004,
-        angleOffset: Math.PI / 5,
-        skills: ['Node.js', 'Express.js', 'Laravel', 'PHP', 'JWT / RBAC']
-      },
-      {
-        name: 'Databases',
-        colorHex: '#FF5722',
-        colorNum: 0xff5722,
-        radius: 15.6,
-        speed: 0.003,
-        angleOffset: Math.PI / 3,
-        skills: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis']
-      },
-      {
-        name: 'Tools & Cloud',
-        colorHex: '#a855f7',
-        colorNum: 0xa855f7,
-        radius: 19.0,
-        speed: 0.0015,
-        angleOffset: Math.PI / 6,
-        skills: ['Git', 'GitHub', 'Docker', 'AWS']
-      }
-    ];
+    // --- DYNAMIC ORBIT RINGS & METADATA DERIVATION FROM MYSQL/HOOK DATA ---
+    const orbitDefaults = {
+      'Frontend': { radius: 6.0, speed: 0.007, colorHex: '#FFE9A8', colorNum: 0xffe9a8, angleOffset: 0 },
+      'Backend': { radius: 10.4, speed: 0.0045, colorHex: '#FF9A3D', colorNum: 0xff9a3d, angleOffset: Math.PI / 4 },
+      'Databases': { radius: 14.8, speed: 0.003, colorHex: '#FF5722', colorNum: 0xff5722, angleOffset: Math.PI / 3 },
+      'Tools / Cloud': { radius: 19.2, speed: 0.0016, colorHex: '#a855f7', colorNum: 0xa855f7, angleOffset: Math.PI / 6 }
+    };
 
+    const defaultAngleOffsets = [0, Math.PI / 4, Math.PI / 3, Math.PI / 6, Math.PI / 5];
+    const categoryMap = new Map();
+
+    (skills || []).forEach((skill) => {
+      const catName = normalizeSkillCategory(skill.category);
+      if (!categoryMap.has(catName)) {
+        const def = orbitDefaults[catName] || {};
+        const colorHex = skill.colorHex || skill.color_hex || def.colorHex || '#FF9A3D';
+        const colorNum = def.colorNum || (parseInt(colorHex.replace('#', '0x'), 16) || 0xff9a3d);
+        const radius = Number(skill.orbitRadius || skill.orbit_radius || def.radius || (6.0 + categoryMap.size * 4.4));
+        const speed = Number(skill.orbitSpeed || skill.orbit_speed || def.speed || 0.004);
+        const angleOffset = def.angleOffset !== undefined ? def.angleOffset : defaultAngleOffsets[categoryMap.size % defaultAngleOffsets.length];
+
+        categoryMap.set(catName, {
+          name: catName,
+          colorHex,
+          colorNum,
+          radius,
+          speed,
+          angleOffset,
+          skills: []
+        });
+      }
+
+      categoryMap.get(catName).skills.push(skill);
+    });
+
+    const orbitCategories = Array.from(categoryMap.values());
     const orbitGroups = [];
     const interactiveSprites = [];
 
     orbitCategories.forEach((cat) => {
       const orbitGroup = new THREE.Group();
+      const isCatActive = activeCategory === 'All' || normalizeSkillCategory(activeCategory) === cat.name;
 
       // Draw Orbit Ring Line
       const ringGeo = new THREE.BufferGeometry();
@@ -532,28 +521,29 @@ export default function TechStack() {
       const ringMat = new THREE.LineBasicMaterial({
         color: cat.colorNum,
         transparent: true,
-        opacity: 0.42
+        opacity: isCatActive ? 0.45 : 0.12
       });
       const ringLine = new THREE.Line(ringGeo, ringMat);
       orbitGroup.add(ringLine);
 
       // Create Technology Logo Nodes with Staggered Angular Spacing
       const count = cat.skills.length;
-      cat.skills.forEach((skillName, idx) => {
+      cat.skills.forEach((skill, idx) => {
         const angle = cat.angleOffset + (idx / count) * Math.PI * 2;
         const px = Math.cos(angle) * cat.radius;
         const pz = Math.sin(angle) * cat.radius;
-
-        const info = skillDetails[skillName] || { category: cat.name, colorHex: cat.colorHex, desc: skillName };
+        const skillName = skill.name;
+        const colorHex = skill.colorHex || skill.color_hex || cat.colorHex;
+        const desc = skill.desc || skill.description || skillName;
 
         // Container Node Group on Orbit Path
         const nodeGroup = new THREE.Group();
         nodeGroup.position.set(px, 0, pz);
         nodeGroup.userData = {
           skillName,
-          category: info.category,
-          colorHex: info.colorHex,
-          desc: info.desc,
+          category: cat.name,
+          colorHex,
+          desc,
           ringLine
         };
 
@@ -564,22 +554,29 @@ export default function TechStack() {
         hitMesh.userData = nodeGroup.userData;
         nodeGroup.add(hitMesh);
 
-        // Load SVG Logo & Create Logo Node Sprite
-        const logoUrl = logoPaths[skillName];
+        // Logo Resolution: Database logo URL -> Existing CDN logo -> Fallback text glyph
+        const logoUrl = skill.logoUrl || skill.logo_url || skill.iconUrl || logoPaths[skillName];
         if (logoUrl) {
           const img = new Image();
           img.crossOrigin = 'Anonymous';
           img.onload = () => {
-            const logoNodeSprite = createLogoNodeSprite(skillName, img, info.colorHex);
+            const logoNodeSprite = createLogoNodeSprite(skillName, img, colorHex);
             logoNodeSprite.position.set(0, 0, 0);
+            logoNodeSprite.material.opacity = isCatActive ? 1.0 : 0.22;
             nodeGroup.add(logoNodeSprite);
           };
           img.onerror = () => {
-            const logoNodeSprite = createLogoNodeSprite(skillName, null, info.colorHex);
+            const logoNodeSprite = createLogoNodeSprite(skillName, null, colorHex);
             logoNodeSprite.position.set(0, 0, 0);
+            logoNodeSprite.material.opacity = isCatActive ? 1.0 : 0.22;
             nodeGroup.add(logoNodeSprite);
           };
           img.src = logoUrl;
+        } else {
+          const logoNodeSprite = createLogoNodeSprite(skillName, null, colorHex);
+          logoNodeSprite.position.set(0, 0, 0);
+          logoNodeSprite.material.opacity = isCatActive ? 1.0 : 0.22;
+          nodeGroup.add(logoNodeSprite);
         }
 
         orbitGroup.add(nodeGroup);
@@ -759,19 +756,32 @@ export default function TechStack() {
       mount.removeEventListener('click', handleNodeClick);
       window.removeEventListener('resize', handleResize);
 
-      if (mount && renderer.domElement) {
+      if (mount && renderer.domElement && mount.contains(renderer.domElement)) {
         mount.removeChild(renderer.domElement);
       }
       renderer.dispose();
     };
-  }, []);
+  }, [skills, activeCategory]);
+
+  const getCategoryCount = (catId) => {
+    if (catId === 'All') return (skills || []).length;
+    return (skills || []).filter((s) => normalizeSkillCategory(s.category) === normalizeSkillCategory(catId)).length;
+  };
+
+  const CATEGORY_TABS = [
+    { id: 'All', label: 'All Skills', color: '#FF9A3D' },
+    { id: 'Frontend', label: 'Front End', color: '#FFE9A8' },
+    { id: 'Backend', label: 'Back End', color: '#FF9A3D' },
+    { id: 'Databases', label: 'Databases', color: '#FF5722' },
+    { id: 'Tools / Cloud', label: 'Tools / Cloud', color: '#a855f7' }
+  ];
 
   return (
     <section id="skills" className="py-28 pt-32 relative scroll-mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <div className="mono-text text-xs uppercase tracking-widest text-[#FF9A3D] mb-2 font-bold">
               04 &mdash; Skills
@@ -780,35 +790,39 @@ export default function TechStack() {
               3D Skill Solar System
             </h2>
             <p className="text-[#9A9088] text-sm mt-2 max-w-xl leading-relaxed">
-              Explore my technical stack through an interactive 3D skill system. Drag to rotate and hover any skill node.
+              Explore technical competencies through an interactive 3D solar system. Filter categories or hover nodes for details.
             </p>
           </div>
 
-          {/* Cooling Color Scale Legend */}
-          <div className="glass p-3 rounded-xl flex flex-wrap items-center gap-3 text-xs font-mono">
-            <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#FFE9A8] shadow-[0_0_8px_#FFE9A8]"></span>
-              <span className="text-[#F5F1EC]">Frontend</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#FF9A3D] shadow-[0_0_8px_#FF9A3D]"></span>
-              <span className="text-[#F5F1EC]">Backend</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#FF5722] shadow-[0_0_8px_#FF5722]"></span>
-              <span className="text-[#F5F1EC]">Databases</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#a855f7] shadow-[0_0_8px_#a855f7]"></span>
-              <span className="text-[#F5F1EC]">Tools / Cloud</span>
-            </div>
+          {/* Interactive Category Filter Tabs */}
+          <div className="flex flex-wrap items-center gap-1.5 p-1 bg-[#141416] border border-white/10 rounded-xl font-mono text-xs select-none">
+            {CATEGORY_TABS.map((tab) => {
+              const isActive = activeCategory === tab.id;
+              const count = getCategoryCount(tab.id);
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveCategory(tab.id)}
+                  className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer font-bold flex items-center gap-1.5 ${
+                    isActive
+                      ? 'bg-[#FF9A3D] text-[#0D0B0A] shadow-md shadow-[#FF9A3D]/20'
+                      : 'text-[#8A8A8A] hover:text-[#F5F1EC] hover:bg-white/05'
+                  }`}
+                >
+                  <span>{tab.label}</span>
+                  <span className={`text-[10px] ${isActive ? 'text-[#0D0B0A]/80' : 'text-[#8A8A8A]'}`}>
+                    ({count})
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
         {/* Three.js Solar System Container */}
         <div
           ref={containerRef}
-          className="glass relative w-full h-[620px] sm:h-[700px] lg:h-[750px] rounded-3xl overflow-hidden cursor-grab active:cursor-grabbing border border-white/10 bg-[#040306]"
+          className="glass relative w-full h-[580px] sm:h-[660px] lg:h-[720px] rounded-3xl overflow-hidden cursor-grab active:cursor-grabbing border border-white/10 bg-[#040306]"
         >
           {/* Mount Three.js WebGL Canvas */}
           <div ref={mountRef} className="w-full h-full block" />

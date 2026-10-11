@@ -1,10 +1,34 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, GraduationCap, Briefcase, Settings, CheckCircle2, Github, Linkedin, Mail, Instagram } from 'lucide-react';
 import { handleGlassMouseMove, handleGlassMouseLeave } from '../utils/useGlassTilt';
+import { usePortfolioData } from '../hooks/usePortfolioData';
 import aboutPortrait from '../assets/about-portrait.jpg';
 
+const fallbackBioParagraphs = [
+  "I build scalable web applications and enterprise systems with a strong focus on clean architecture, maintainable backends and performant frontends. I specialise in Laravel for backend, React and Vue for frontend, and PostgreSQL for reliable data storage.",
+  "My work centres on dashboards, admin panels, authentication systems, and REST APIs for business-critical applications. I design systems to be secure, testable and scalable — implementing role-based access control, background jobs, and API integrations. I also use AI-assisted development tools to speed up iteration while keeping code quality and architecture decisions intentional.",
+  "Outside of development I enjoy photography as a creative hobby. While I value visual craft, my primary focus is delivering robust engineering solutions that drive business outcomes."
+];
+
 export default function About() {
+  const { profile } = usePortfolioData();
+
+  const fullName = profile?.fullName || 'Hassaan Ali Akbar';
+  const statusText = profile?.statusText || 'Open for Opportunities';
+  const statusBadge = profile?.statusBadge || 'Full-Time';
+  const location = profile?.location || 'Lahore, Pakistan';
+  const githubUrl = profile?.githubUrl || 'https://github.com/hassaanrana07';
+  const linkedinUrl = profile?.linkedinUrl || 'https://linkedin.com/in/hassaanaliakbar';
+  const email = profile?.email || 'hassaanalee07@gmail.com';
+  const instagramUrl = profile?.instagramUrl || 'https://www.instagram.com/hassaanaleerana/';
+
+  const bioParagraphs = useMemo(() => {
+    if (!profile?.bio) return fallbackBioParagraphs;
+    const split = profile.bio.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+    return split.length > 0 ? split : fallbackBioParagraphs;
+  }, [profile?.bio]);
+
   return (
     <section id="about" className="py-24 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,7 +68,7 @@ export default function About() {
               <div className="w-full aspect-square rounded-[14px] overflow-hidden bg-[#171310] relative shadow-inner">
                 <img
                   src={aboutPortrait}
-                  alt="Hassaan Ali Rana"
+                  alt={fullName}
                   className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
               </div>
@@ -53,10 +77,10 @@ export default function About() {
               <div className="mt-4 w-full bg-white/05 border border-[#FF9A3D]/30 rounded-xl px-4 py-2.5 flex items-center justify-between text-xs transition-colors group-hover:border-[#FF9A3D]/50">
                 <div className="flex items-center gap-2 text-[#F5F1EC] font-medium">
                   <CheckCircle2 className="w-4 h-4 text-[#FF9A3D]" />
-                  <span>Open for Opportunities</span>
+                  <span>{statusText}</span>
                 </div>
                 <span className="font-mono text-[10px] text-[#FFC107] bg-[#FF5722]/20 px-2 py-0.5 rounded border border-[#FF5722]/30">
-                  Full-Time
+                  {statusBadge}
                 </span>
               </div>
             </div>
@@ -76,17 +100,18 @@ export default function About() {
               onMouseLeave={handleGlassMouseLeave}
             >
               <div className="space-y-4">
-                <p className="text-lg font-medium text-[#F5F1EC] leading-relaxed">
-                  I build scalable web applications and enterprise systems with a strong focus on clean architecture, maintainable backends and performant frontends. I specialise in Laravel for backend, React and Vue for frontend, and PostgreSQL for reliable data storage.
-                </p>
-
-                <p className="text-[#9A9088] text-sm leading-relaxed">
-                  My work centres on dashboards, admin panels, authentication systems, and REST APIs for business-critical applications. I design systems to be secure, testable and scalable — implementing role-based access control, background jobs, and API integrations. I also use AI-assisted development tools to speed up iteration while keeping code quality and architecture decisions intentional.
-                </p>
-
-                <p className="text-[#9A9088] text-sm leading-relaxed">
-                  Outside of development I enjoy photography as a creative hobby. While I value visual craft, my primary focus is delivering robust engineering solutions that drive business outcomes.
-                </p>
+                {bioParagraphs.map((paragraph, idx) => (
+                  <p
+                    key={idx}
+                    className={
+                      idx === 0
+                        ? "text-lg font-medium text-[#F5F1EC] leading-relaxed"
+                        : "text-[#9A9088] text-sm leading-relaxed"
+                    }
+                  >
+                    {paragraph}
+                  </p>
+                ))}
               </div>
 
               {/* Pill-shaped Badges */}
@@ -94,7 +119,7 @@ export default function About() {
                 <div className="flex flex-wrap gap-2.5">
                   <span className="inline-flex items-center gap-1.5 bg-white/05 border border-white/10 text-[#9A9088] hover:text-[#FF9A3D] text-xs px-4 py-1.5 rounded-full transition-all duration-200 hover:scale-105 font-medium cursor-default">
                     <MapPin className="w-3.5 h-3.5 text-[#FF9A3D]" />
-                    <span>Lahore, Pakistan</span>
+                    <span>{location}</span>
                   </span>
 
                   <span className="inline-flex items-center gap-1.5 bg-white/05 border border-white/10 text-[#9A9088] hover:text-[#FF9A3D] text-xs px-4 py-1.5 rounded-full transition-all duration-200 hover:scale-105 font-medium cursor-default">
@@ -116,7 +141,7 @@ export default function About() {
                 {/* Social Actions Row */}
                 <div className="flex flex-wrap items-center gap-3 pt-1">
                   <motion.a
-                    href="https://github.com/hassaanrana07"
+                    href={githubUrl}
                     target="_blank"
                     rel="noreferrer"
                     whileHover={{ scale: 1.04, y: -2 }}
@@ -129,7 +154,7 @@ export default function About() {
                   </motion.a>
 
                   <motion.a
-                    href="https://linkedin.com/in/hassaanaliakbar"
+                    href={linkedinUrl}
                     target="_blank"
                     rel="noreferrer"
                     whileHover={{ scale: 1.04, y: -2 }}
@@ -142,7 +167,7 @@ export default function About() {
                   </motion.a>
 
                   <motion.a
-                    href="mailto:hassaanalee07@gmail.com"
+                    href={`mailto:${email}`}
                     whileHover={{ scale: 1.04, y: -2 }}
                     whileTap={{ scale: 0.96 }}
                     transition={{ duration: 0.15 }}
@@ -153,7 +178,7 @@ export default function About() {
                   </motion.a>
 
                   <motion.a
-                    href="https://www.instagram.com/hassaanaleerana/"
+                    href={instagramUrl}
                     target="_blank"
                     rel="noreferrer"
                     whileHover={{ scale: 1.04, y: -2 }}
